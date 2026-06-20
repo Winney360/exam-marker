@@ -25,8 +25,8 @@ pub async fn create_assessment(
     pool: &DbPool,
     req: CreateAssessmentRequest,
 ) -> Result<CreateAssessmentResponse, String> {
-    let teacher_id = Uuid::parse_str(&req.teacher_id)
-        .map_err(|e| format!("Invalid teacher_id: {}", e))?;
+    let teacher_id =
+        Uuid::parse_str(&req.teacher_id).map_err(|e| format!("Invalid teacher_id: {}", e))?;
 
     let assessment = assessment_repository::create_assessment(
         pool,

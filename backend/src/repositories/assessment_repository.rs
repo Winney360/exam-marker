@@ -42,7 +42,10 @@ pub async fn get_assessment(pool: &DbPool, id: Uuid) -> Result<Assessment, sqlx:
     .await
 }
 
-pub async fn list_assessments(pool: &DbPool, teacher_id: Uuid) -> Result<Vec<Assessment>, sqlx::Error> {
+pub async fn list_assessments(
+    pool: &DbPool,
+    teacher_id: Uuid,
+) -> Result<Vec<Assessment>, sqlx::Error> {
     sqlx::query_as::<_, Assessment>(
         "SELECT id, teacher_id, title, description, max_mark, created_at, updated_at FROM assessments WHERE teacher_id = $1 ORDER BY created_at DESC",
     )
