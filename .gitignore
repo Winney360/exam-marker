@@ -1,0 +1,32 @@
+# Rust
+target/
+Cargo.lock
+**/*.rs.bk
+
+# Python
+ocr-service/.venv/
+ocr-service/__pycache__/
+ocr-service/**/*.pyc
+ocr-service/.pytest_cache/
+ocr-service/.mypy_cache/
+ocr-service/.ruff_cache/
+
+# Environment files
+.env
+.env.*
+backend/.env
+ocr-service/.env
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Generated / local data
+uploads/
+storage/
+tmp/
