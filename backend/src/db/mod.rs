@@ -22,7 +22,13 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             created_at TIMESTAMP NOT NULL,
             updated_at TIMESTAMP NOT NULL
         );
-        
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
         CREATE TABLE IF NOT EXISTS script_uploads (
             id UUID PRIMARY KEY,
             assessment_id UUID NOT NULL REFERENCES assessments(id),
@@ -33,7 +39,13 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             created_at TIMESTAMP NOT NULL,
             updated_at TIMESTAMP NOT NULL
         );
-        
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
         CREATE TABLE IF NOT EXISTS extracted_answers (
             id UUID PRIMARY KEY,
             script_id UUID NOT NULL REFERENCES script_uploads(id),
@@ -42,7 +54,13 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             confidence REAL NOT NULL,
             created_at TIMESTAMP NOT NULL
         );
-        
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
         CREATE TABLE IF NOT EXISTS scoring_results (
             id UUID PRIMARY KEY,
             answer_id UUID NOT NULL REFERENCES extracted_answers(id),
@@ -50,7 +68,13 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             reasoning TEXT NOT NULL,
             created_at TIMESTAMP NOT NULL
         );
-        
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
         CREATE TABLE IF NOT EXISTS final_marks (
             id UUID PRIMARY KEY,
             script_id UUID NOT NULL REFERENCES script_uploads(id),
