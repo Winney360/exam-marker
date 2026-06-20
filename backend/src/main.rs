@@ -1,11 +1,21 @@
-use axum::{Router, routing::get};
+use axum::{Router, extract::State, routing::get};
 use std::net::SocketAddr;
+use std::sync::Arc;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
+mod config;
 mod db;
 mod models;
 mod routes;
 mod services;
+
+use config::Config;
+use db::DbPool;
+
+#[derive(Clone)]
+pub struct AppState {
+    pub db: DbPool,
+}
 
 #[tokio::main]
 async fn main() {
@@ -13,9 +23,26 @@ async fn main() {
         .with(tracing_subscriber::fmt::layer())
         .init();
 
-    let app = Router::new().route("/health", get(routes::health::health_check));
+    let config = Config::from_env();
 
-    let addr = SocketAddr::from(([127, 0, 0, 1], 3000));
+    let db = db::create_pool(&config.database_url)
+        .await
+        .expect("failed to create database pool");
+
+    db::run_migrations(&db)
+        .await
+        .expect("failed to run migrations");
+
+    let state = AppState { db };
+
+    let app = Router::new()
+        .route("/health", get(routes::health::health_check))
+        .with_state(state);
+
+    let addr: SocketAddr = format!("{}:{}", config.server_addr, config.server_port)
+        .parse()
+        .expect("invalid address");
+
     let listener = tokio::net::TcpListener::bind(addr)
         .await
         .expect("failed to bind server");
