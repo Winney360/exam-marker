@@ -1,4 +1,4 @@
-use axum::{Router, extract::State, routing::get};
+use axum::{Router, extract::State, routing::{get, post}};
 use std::net::SocketAddr;
 use std::sync::Arc;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
@@ -6,6 +6,7 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 mod config;
 mod db;
 mod models;
+mod repositories;
 mod routes;
 mod services;
 
@@ -37,10 +38,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/health", get(routes::health::health_check))
-        .with_state(state);
-
-    let addr: SocketAddr = format!("{}:{}", config.server_addr, config.server_port)
-        .parse()
+        .route("/assessments", post(routes::assessments::create_assessment))
         .expect("invalid address");
 
     let listener = tokio::net::TcpListener::bind(addr)
