@@ -1,5 +1,4 @@
 use crate::db::DbPool;
-use crate::models::Assessment;
 use crate::repositories::assessment_repository;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
