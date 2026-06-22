@@ -36,7 +36,7 @@ async fn main() {
         .expect("failed to run migrations");
 
     let state = AppState { db };
-    
+
     let addr = format!("{}:{}", config.server_addr, config.server_port);
 
     let app = Router::new()

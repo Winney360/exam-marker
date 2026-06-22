@@ -1,5 +1,5 @@
-use sqlx::postgres::PgPoolOptions;
 use sqlx::PgPool;
+use sqlx::postgres::PgPoolOptions;
 
 pub type DbPool = PgPool;
 
@@ -19,9 +19,19 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             title VARCHAR NOT NULL,
             description TEXT,
             max_mark INTEGER NOT NULL,
-            created_at TIMESTAMP NOT NULL,
-            updated_at TIMESTAMP NOT NULL
+            created_at TIMESTAMPTZ NOT NULL,
+            updated_at TIMESTAMPTZ NOT NULL
         );
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
+        ALTER TABLE assessments
+        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC',
+        ALTER COLUMN updated_at TYPE TIMESTAMPTZ USING updated_at AT TIME ZONE 'UTC'
         "#,
     )
     .execute(pool)
@@ -36,9 +46,19 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             file_path VARCHAR NOT NULL,
             file_type VARCHAR NOT NULL,
             status VARCHAR NOT NULL,
-            created_at TIMESTAMP NOT NULL,
-            updated_at TIMESTAMP NOT NULL
+            created_at TIMESTAMPTZ NOT NULL,
+            updated_at TIMESTAMPTZ NOT NULL
         );
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
+        ALTER TABLE script_uploads
+        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC',
+        ALTER COLUMN updated_at TYPE TIMESTAMPTZ USING updated_at AT TIME ZONE 'UTC'
         "#,
     )
     .execute(pool)
@@ -52,8 +72,17 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             question_number INTEGER NOT NULL,
             answer_text TEXT NOT NULL,
             confidence REAL NOT NULL,
-            created_at TIMESTAMP NOT NULL
+            created_at TIMESTAMPTZ NOT NULL
         );
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
+        ALTER TABLE extracted_answers
+        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC'
         "#,
     )
     .execute(pool)
@@ -66,8 +95,17 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             answer_id UUID NOT NULL REFERENCES extracted_answers(id),
             suggested_mark REAL NOT NULL,
             reasoning TEXT NOT NULL,
-            created_at TIMESTAMP NOT NULL
+            created_at TIMESTAMPTZ NOT NULL
         );
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
+        ALTER TABLE scoring_results
+        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC'
         "#,
     )
     .execute(pool)
@@ -83,9 +121,19 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             teacher_final_mark REAL NOT NULL,
             is_override BOOLEAN NOT NULL,
             override_reason TEXT,
-            created_at TIMESTAMP NOT NULL,
-            updated_at TIMESTAMP NOT NULL
+            created_at TIMESTAMPTZ NOT NULL,
+            updated_at TIMESTAMPTZ NOT NULL
         );
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
+        ALTER TABLE final_marks
+        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC',
+        ALTER COLUMN updated_at TYPE TIMESTAMPTZ USING updated_at AT TIME ZONE 'UTC'
         "#,
     )
     .execute(pool)
