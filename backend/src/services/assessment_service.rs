@@ -45,3 +45,15 @@ pub async fn create_assessment(
         max_mark: assessment.max_mark,
     })
 }
+
+pub async fn get_assessment(pool: &DbPool, id: Uuid) -> Result<crate::models::Assessment, String> {
+    assessment_repository::get_assessment(pool, id)
+        .await
+        .map_err(|e| {
+            if matches!(e, sqlx::Error::RowNotFound) {
+                "Assessment not found".to_string()
+            } else {
+                format!("Database error: {}", e)
+            }
+        })
+}
