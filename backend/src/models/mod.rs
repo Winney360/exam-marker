@@ -15,6 +15,7 @@ pub struct Assessment {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+#[allow(dead_code)]
 pub struct ScriptUpload {
     pub id: Uuid,
     pub assessment_id: Uuid,
@@ -27,6 +28,7 @@ pub struct ScriptUpload {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+#[allow(dead_code)]
 pub struct ExtractedAnswer {
     pub id: Uuid,
     pub script_id: Uuid,
@@ -37,6 +39,7 @@ pub struct ExtractedAnswer {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+#[allow(dead_code)]
 pub struct ScoringResult {
     pub id: Uuid,
     pub answer_id: Uuid,
@@ -46,6 +49,7 @@ pub struct ScoringResult {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+#[allow(dead_code)]
 pub struct FinalMark {
     pub id: Uuid,
     pub script_id: Uuid,

@@ -42,7 +42,7 @@ async fn main() {
     let app = Router::new()
         .route("/health", get(routes::health::health_check))
         .route("/assessments", post(routes::assessments::create_assessment))
-        .route("/assessments/:id", get(routes::assessments::get_assessment))
+        .route("/assessments/{id}", get(routes::assessments::get_assessment))
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind(&addr)

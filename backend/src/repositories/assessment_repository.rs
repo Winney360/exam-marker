@@ -42,6 +42,7 @@ pub async fn get_assessment(pool: &DbPool, id: Uuid) -> Result<Assessment, sqlx:
     .await
 }
 
+#[allow(dead_code)]
 pub async fn list_assessments(
     pool: &DbPool,
     teacher_id: Uuid,
