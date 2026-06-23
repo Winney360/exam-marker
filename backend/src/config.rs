@@ -7,6 +7,7 @@ pub struct Config {
     pub server_port: u16,
     pub upload_dir: String,
     pub ocr_service_url: String,
+    pub jwt_secret: String,
 }
 
 impl Config {
@@ -23,6 +24,8 @@ impl Config {
         let upload_dir = env::var("UPLOAD_DIR").unwrap_or_else(|_| "uploads".to_string());
         let ocr_service_url =
             env::var("OCR_SERVICE_URL").unwrap_or_else(|_| "http://127.0.0.1:5001".to_string());
+        let jwt_secret = env::var("JWT_SECRET")
+            .unwrap_or_else(|_| "dev-secret-change-in-production".to_string());
 
         Config {
             database_url,
@@ -30,6 +33,7 @@ impl Config {
             server_port,
             upload_dir,
             ocr_service_url,
+            jwt_secret,
         }
     }
 }
