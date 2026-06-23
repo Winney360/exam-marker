@@ -70,3 +70,25 @@ pub async fn list_scripts(
         .await
         .map_err(AppError::Database)
 }
+
+pub async fn get_script(pool: &DbPool, id: Uuid) -> Result<ScriptUpload, AppError> {
+    script_repo::get_script(pool, id)
+        .await
+        .map_err(|e| match e {
+            sqlx::Error::RowNotFound => AppError::NotFound("Script not found".into()),
+            other => AppError::Database(other),
+        })
+}
+
+pub async fn delete_script(pool: &DbPool, id: Uuid) -> Result<(), AppError> {
+    let file_path = script_repo::delete_script(pool, id)
+        .await?
+        .ok_or_else(|| AppError::NotFound("Script not found".into()))?;
+    let path = std::path::Path::new(&file_path);
+    if path.exists() {
+        tokio::fs::remove_file(path)
+            .await
+            .map_err(|e| AppError::Internal(format!("Failed to delete file: {}", e)))?;
+    }
+    Ok(())
+}
