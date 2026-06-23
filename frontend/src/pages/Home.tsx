@@ -312,7 +312,7 @@ export default function Home() {
         {/* CTA */}
         <section className="py-24 px-6 sm:px-8">
           <div className="max-w-5xl mx-auto">
-            <div className="relative rounded-3xl p-8 sm:p-12 lg:p-14 shadow-2xl overflow-hidden border border-slate-800/60 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12"
+            <div className="relative rounded-3xl p-8 sm:p-12 lg:p-14 shadow-2xl overflow-hidden border border-slate-800/60 flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-4"
               style={{
                 background: 'linear-gradient(135deg, rgba(6,182,212,0.12), rgba(20,184,166,0.08))',
                 backdropFilter: 'blur(12px)',
