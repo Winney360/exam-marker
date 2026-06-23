@@ -27,7 +27,7 @@ function App() {
           </Route>
         </Route>
         <Route element={<ProtectedRoute />}>
-          <Route path="/grading" element={<Grading />} />
+          <Route path="/grading/:assessmentId/:scriptId" element={<Grading />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
