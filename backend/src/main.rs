@@ -78,6 +78,7 @@ async fn main() {
             "/scripts/{id}/process",
             post(routes::process::process_script),
         )
+        .route("/scripts/{id}/mark", post(routes::marking::mark_script))
         .layer(cors)
         .layer(TraceLayer::new_for_http())
         .with_state(state);
