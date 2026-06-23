@@ -170,7 +170,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-slate-950">
       {/* Navigation */}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-slate-950/80 backdrop-blur-lg border-b border-slate-800/60">
+      <header className="bg-slate-900 border-b border-slate-800/60">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/20"
@@ -197,7 +197,7 @@ export default function Home() {
 
       <main>
         {/* Hero */}
-        <section className="relative pt-32 pb-20 px-6 sm:px-8 overflow-hidden">
+        <section className="relative pt-24 pb-20 px-6 sm:px-8 overflow-hidden">
           <div className="absolute inset-0">
             <img
               src="/hero.jpeg"
