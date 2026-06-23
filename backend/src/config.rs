@@ -5,6 +5,7 @@ pub struct Config {
     pub database_url: String,
     pub server_addr: String,
     pub server_port: u16,
+    pub upload_dir: String,
 }
 
 impl Config {
@@ -18,10 +19,13 @@ impl Config {
             .and_then(|p| p.parse().ok())
             .unwrap_or(3000);
 
+        let upload_dir = env::var("UPLOAD_DIR").unwrap_or_else(|_| "uploads".to_string());
+
         Config {
             database_url,
             server_addr,
             server_port,
+            upload_dir,
         }
     }
 }

@@ -2,10 +2,13 @@ use axum::{
     Router,
     routing::{get, post},
 };
+use tower_http::cors::CorsLayer;
+use tower_http::trace::TraceLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
 mod config;
 mod db;
+mod error;
 mod models;
 mod repositories;
 mod routes;
@@ -17,6 +20,7 @@ use db::DbPool;
 #[derive(Clone)]
 pub struct AppState {
     pub db: DbPool,
+    pub config: Config,
 }
 
 #[tokio::main]
@@ -35,14 +39,29 @@ async fn main() {
         .await
         .expect("failed to run migrations");
 
-    let state = AppState { db };
+    tokio::fs::create_dir_all(&config.upload_dir)
+        .await
+        .expect("failed to create upload directory");
+
+    let state = AppState {
+        db,
+        config: config.clone(),
+    };
 
     let addr = format!("{}:{}", config.server_addr, config.server_port);
+
+    let cors = CorsLayer::permissive();
 
     let app = Router::new()
         .route("/health", get(routes::health::health_check))
         .route("/assessments", post(routes::assessments::create_assessment))
         .route("/assessments/{id}", get(routes::assessments::get_assessment))
+        .route(
+            "/assessments/{id}/scripts",
+            post(routes::scripts::upload_script),
+        )
+        .layer(cors)
+        .layer(TraceLayer::new_for_http())
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind(&addr)

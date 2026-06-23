@@ -1,4 +1,5 @@
 use crate::db::DbPool;
+use crate::error::AppError;
 use crate::repositories::assessment_repository;
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
@@ -23,9 +24,9 @@ pub struct CreateAssessmentResponse {
 pub async fn create_assessment(
     pool: &DbPool,
     req: CreateAssessmentRequest,
-) -> Result<CreateAssessmentResponse, String> {
-    let teacher_id =
-        Uuid::parse_str(&req.teacher_id).map_err(|e| format!("Invalid teacher_id: {}", e))?;
+) -> Result<CreateAssessmentResponse, AppError> {
+    let teacher_id = Uuid::parse_str(&req.teacher_id)
+        .map_err(|_| AppError::BadRequest("Invalid teacher_id UUID".into()))?;
 
     let assessment = assessment_repository::create_assessment(
         pool,
@@ -34,8 +35,7 @@ pub async fn create_assessment(
         req.description,
         req.max_mark,
     )
-    .await
-    .map_err(|e| format!("Database error: {}", e))?;
+    .await?;
 
     Ok(CreateAssessmentResponse {
         id: assessment.id,
@@ -46,14 +46,11 @@ pub async fn create_assessment(
     })
 }
 
-pub async fn get_assessment(pool: &DbPool, id: Uuid) -> Result<crate::models::Assessment, String> {
-    assessment_repository::get_assessment(pool, id)
-        .await
-        .map_err(|e| {
-            if matches!(e, sqlx::Error::RowNotFound) {
-                "Assessment not found".to_string()
-            } else {
-                format!("Database error: {}", e)
-            }
-        })
+pub async fn get_assessment(pool: &DbPool, id: Uuid) -> Result<crate::models::Assessment, AppError> {
+    assessment_repository::get_assessment(pool, id).await.map_err(|e| {
+        match e {
+            sqlx::Error::RowNotFound => AppError::NotFound("Assessment not found".into()),
+            other => AppError::Database(other),
+        }
+    })
 }
