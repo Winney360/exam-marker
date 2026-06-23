@@ -2,7 +2,7 @@ import { Outlet, NavLink } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.tsx'
 
 const navItems = [
-  { to: '/', label: 'Dashboard' },
+  { to: '/dashboard', label: 'Dashboard' },
   { to: '/assessments', label: 'Assessments' },
 ]
 
