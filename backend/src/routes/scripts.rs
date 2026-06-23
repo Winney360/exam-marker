@@ -9,6 +9,15 @@ use crate::error::AppError;
 use crate::services::script_service;
 use crate::AppState;
 
+pub async fn list_scripts(
+    State(state): State<AppState>,
+    Path(assessment_id): Path<Uuid>,
+) -> Result<Json<serde_json::Value>, AppError> {
+    let scripts = script_service::list_scripts(&state.db, assessment_id).await?;
+
+    Ok(Json(json!({ "success": true, "data": scripts })))
+}
+
 pub async fn upload_script(
     State(state): State<AppState>,
     Path(assessment_id): Path<Uuid>,
