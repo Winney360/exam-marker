@@ -12,15 +12,15 @@ pub async fn verify_mark_ownership(
     teacher_id: Uuid,
 ) -> Result<(), AppError> {
     let mark = score_repo::get_mark_by_id(pool, mark_id).await.map_err(|e| match e {
-        sqlx::Error::RowNotFound => AppError::NotFound("Mark not found".into()),
+        sqlx::Error::RowNotFound => AppError::NotFound("We couldn't find this mark. It may have been deleted.".into()),
         other => AppError::Database(other),
     })?;
     let script = script_repo::get_script(pool, mark.script_id).await.map_err(|e| match e {
-        sqlx::Error::RowNotFound => AppError::NotFound("Script not found".into()),
+        sqlx::Error::RowNotFound => AppError::NotFound("We couldn't find this script. It may have been deleted.".into()),
         other => AppError::Database(other),
     })?;
     assessment_repository::get_assessment(pool, script.assessment_id, teacher_id).await.map_err(|e| match e {
-        sqlx::Error::RowNotFound => AppError::NotFound("Assessment not found".into()),
+        sqlx::Error::RowNotFound => AppError::NotFound("We couldn't find this assessment. It may have been deleted.".into()),
         other => AppError::Database(other),
     })?;
     Ok(())
@@ -70,7 +70,7 @@ pub async fn override_mark(
     score_repo::get_mark_by_id(pool, mark_id)
         .await
         .map_err(|e| match e {
-            sqlx::Error::RowNotFound => AppError::NotFound("Mark not found".into()),
+            sqlx::Error::RowNotFound => AppError::NotFound("We couldn't find this mark. It may have been deleted.".into()),
             other => AppError::Database(other),
         })?;
 
