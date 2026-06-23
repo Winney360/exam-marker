@@ -311,7 +311,7 @@ export default function Home() {
 
         {/* CTA */}
         <section className="py-24 px-6 sm:px-8">
-          <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-8 lg:gap-16">
+          <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-10">
             <div className="flex-1 text-center lg:text-left">
               <h2 className="text-3xl sm:text-4xl font-bold text-slate-100 tracking-tight">
                 Ready to save hours on grading?
@@ -335,7 +335,7 @@ export default function Home() {
               <img
                 src="/ask.png"
                 alt=""
-                className="w-56 sm:w-64 lg:w-80 h-auto object-contain"
+                className="w-72 sm:w-80 lg:w-96 h-auto object-contain"
               />
             </div>
           </div>
