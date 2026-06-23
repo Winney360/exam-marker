@@ -312,7 +312,7 @@ export default function Home() {
         {/* CTA */}
         <section className="py-24 px-6 sm:px-8">
           <div className="max-w-5xl mx-auto">
-            <div className="relative rounded-3xl p-8 sm:p-12 lg:p-14 shadow-2xl overflow-hidden border border-slate-800/60 flex flex-col lg:flex-row items-center justify-center gap-2 lg:gap-4"
+            <div className="relative rounded-3xl p-8 sm:p-10 lg:p-12 shadow-2xl overflow-hidden border border-slate-800/60 flex flex-col lg:flex-row items-center justify-center gap-4 lg:gap-6"
               style={{
                 background: 'linear-gradient(135deg, rgba(6,182,212,0.12), rgba(20,184,166,0.08))',
                 backdropFilter: 'blur(12px)',
@@ -340,7 +340,7 @@ export default function Home() {
                 <img
                   src="/ask.png"
                   alt=""
-                  className="w-80 sm:w-96 lg:w-[32rem] h-auto object-contain"
+                  className="w-48 sm:w-56 lg:w-64 h-auto object-contain"
                 />
               </div>
             </div>
