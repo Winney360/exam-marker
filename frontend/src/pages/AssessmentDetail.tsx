@@ -283,6 +283,12 @@ export default function AssessmentDetail() {
                   >
                     Review
                   </Link>
+                  <Link
+                    to={`/grading/${id}/${s.id}`}
+                    className="px-3 py-1.5 text-xs font-medium rounded bg-teal-400 text-slate-900 hover:bg-teal-300 transition-colors"
+                  >
+                    Grade
+                  </Link>
                 </div>
               </div>
             ))}
