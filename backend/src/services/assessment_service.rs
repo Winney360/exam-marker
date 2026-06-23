@@ -54,3 +54,9 @@ pub async fn get_assessment(pool: &DbPool, id: Uuid) -> Result<crate::models::As
         }
     })
 }
+
+pub async fn list_assessments(pool: &DbPool) -> Result<Vec<crate::models::Assessment>, AppError> {
+    assessment_repository::list_all_assessments(pool)
+        .await
+        .map_err(AppError::Database)
+}
