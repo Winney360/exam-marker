@@ -61,7 +61,10 @@ async fn main() {
         .route("/health", get(routes::health::health_check))
         .route("/auth/register", post(routes::auth::register))
         .route("/auth/login", post(routes::auth::login))
-        .route("/assessments", post(routes::assessments::create_assessment))
+        .route(
+            "/assessments",
+            get(routes::assessments::list_assessments).post(routes::assessments::create_assessment),
+        )
         .route("/assessments/{id}", get(routes::assessments::get_assessment))
         .route(
             "/assessments/{id}/analytics",
@@ -69,7 +72,7 @@ async fn main() {
         )
         .route(
             "/assessments/{id}/scripts",
-            post(routes::scripts::upload_script),
+            get(routes::scripts::list_scripts).post(routes::scripts::upload_script),
         )
         .route(
             "/assessments/{id}/questions",
