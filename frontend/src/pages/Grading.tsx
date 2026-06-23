@@ -220,7 +220,7 @@ export default function Grading() {
             {/* Touch to Quiz */}
             <button
               type="button"
-              className="w-full py-4 px-6 rounded-2xl bg-gradient-to-br from-cyan-500 to-teal-600 text-white font-semibold text-base shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:from-cyan-400 hover:to-teal-500 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-3"
+              className="w-full py-4 px-6 rounded-2xl bg-teal-400 text-slate-900 font-semibold text-base shadow-xl shadow-teal-500/25 hover:shadow-teal-500/40 hover:bg-teal-300 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-3"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
