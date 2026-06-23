@@ -16,11 +16,13 @@ mod services;
 
 use config::Config;
 use db::DbPool;
+use services::ocr_client::OcrClient;
 
 #[derive(Clone)]
 pub struct AppState {
     pub db: DbPool,
     pub config: Config,
+    pub ocr: OcrClient,
 }
 
 #[tokio::main]
@@ -43,9 +45,12 @@ async fn main() {
         .await
         .expect("failed to create upload directory");
 
+    let ocr = OcrClient::new(config.ocr_service_url.clone());
+
     let state = AppState {
         db,
         config: config.clone(),
+        ocr,
     };
 
     let addr = format!("{}:{}", config.server_addr, config.server_port);
