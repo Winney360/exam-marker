@@ -204,7 +204,7 @@ export default function Home() {
               alt=""
               className="w-full h-full object-cover object-bottom"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950" />
+            <div className="absolute inset-0 bg-slate-950/40" />
           </div>
           <div className="relative max-w-3xl mx-auto text-center">
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15]">
