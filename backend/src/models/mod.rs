@@ -15,6 +15,18 @@ pub struct Assessment {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
+pub struct Question {
+    pub id: Uuid,
+    pub assessment_id: Uuid,
+    pub question_number: i32,
+    pub max_marks: i32,
+    pub memo_text: String,
+    pub keywords: Vec<String>,
+    pub created_at: DateTime<Utc>,
+    pub updated_at: DateTime<Utc>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize, FromRow)]
 #[allow(dead_code)]
 pub struct ScriptUpload {
     pub id: Uuid,
