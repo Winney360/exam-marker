@@ -1,4 +1,5 @@
 import { Outlet, NavLink } from 'react-router-dom'
+import { useAuth } from '../hooks/useAuth.tsx'
 
 const navItems = [
   { to: '/', label: 'Dashboard' },
@@ -6,6 +7,7 @@ const navItems = [
 ]
 
 export default function Layout() {
+  const { user, logout } = useAuth()
   return (
     <div className="flex h-screen bg-gray-100">
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
@@ -30,10 +32,14 @@ export default function Layout() {
             </NavLink>
           ))}
         </nav>
-        <div className="p-4 border-t border-gray-200">
+        <div className="p-4 border-t border-gray-200 space-y-2">
+          {user && (
+            <p className="text-xs text-gray-400 px-4 truncate">{user.name} ({user.email})</p>
+          )}
           <button
             type="button"
-            className="w-full px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-50 rounded-lg transition-colors text-left"
+            onClick={logout}
+            className="w-full px-4 py-2 text-sm text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors text-left"
           >
             Logout
           </button>
