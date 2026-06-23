@@ -6,6 +6,7 @@ pub struct Config {
     pub server_addr: String,
     pub server_port: u16,
     pub upload_dir: String,
+    pub ocr_service_url: String,
 }
 
 impl Config {
@@ -20,12 +21,15 @@ impl Config {
             .unwrap_or(3000);
 
         let upload_dir = env::var("UPLOAD_DIR").unwrap_or_else(|_| "uploads".to_string());
+        let ocr_service_url =
+            env::var("OCR_SERVICE_URL").unwrap_or_else(|_| "http://127.0.0.1:5001".to_string());
 
         Config {
             database_url,
             server_addr,
             server_port,
             upload_dir,
+            ocr_service_url,
         }
     }
 }
