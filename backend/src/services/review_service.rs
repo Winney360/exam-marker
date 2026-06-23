@@ -4,7 +4,27 @@ use uuid::Uuid;
 use crate::db::DbPool;
 use crate::error::AppError;
 use crate::models::FinalMark;
-use crate::repositories::score_repo;
+use crate::repositories::{assessment_repository, score_repo, script_repo};
+
+pub async fn verify_mark_ownership(
+    pool: &DbPool,
+    mark_id: Uuid,
+    teacher_id: Uuid,
+) -> Result<(), AppError> {
+    let mark = score_repo::get_mark_by_id(pool, mark_id).await.map_err(|e| match e {
+        sqlx::Error::RowNotFound => AppError::NotFound("Mark not found".into()),
+        other => AppError::Database(other),
+    })?;
+    let script = script_repo::get_script(pool, mark.script_id).await.map_err(|e| match e {
+        sqlx::Error::RowNotFound => AppError::NotFound("Script not found".into()),
+        other => AppError::Database(other),
+    })?;
+    assessment_repository::get_assessment(pool, script.assessment_id, teacher_id).await.map_err(|e| match e {
+        sqlx::Error::RowNotFound => AppError::NotFound("Assessment not found".into()),
+        other => AppError::Database(other),
+    })?;
+    Ok(())
+}
 
 #[derive(Debug, Serialize)]
 pub struct MarkWithDetails {
