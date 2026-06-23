@@ -4,6 +4,8 @@ import numpy as np
 
 from .preprocessor import preprocess_image
 
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
 
 def extract_text(image: np.ndarray, lang: str = "eng") -> tuple[str, float]:
     processed = preprocess_image(image)
