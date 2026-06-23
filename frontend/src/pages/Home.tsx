@@ -311,15 +311,15 @@ export default function Home() {
 
         {/* CTA */}
         <section className="py-24 px-6 sm:px-8">
-          <div className="max-w-3xl mx-auto text-center">
-            <div className="relative rounded-3xl p-12 sm:p-16 shadow-2xl overflow-hidden border border-slate-800/60"
+          <div className="max-w-6xl mx-auto">
+            <div className="relative rounded-3xl p-8 sm:p-12 lg:p-16 shadow-2xl overflow-hidden border border-slate-800/60 flex flex-col lg:flex-row items-center gap-8 lg:gap-16"
               style={{
                 background: 'linear-gradient(135deg, rgba(6,182,212,0.12), rgba(20,184,166,0.08))',
                 backdropFilter: 'blur(12px)',
               }}>
               <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-cyan-500/5" />
               <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-teal-500/5" />
-              <div className="relative">
+              <div className="relative flex-1 text-center lg:text-left">
                 <h2 className="text-3xl sm:text-4xl font-bold text-slate-100 tracking-tight">
                   Ready to save hours on grading?
                 </h2>
@@ -337,6 +337,13 @@ export default function Home() {
                     </svg>
                   </Link>
                 </div>
+              </div>
+              <div className="relative flex-shrink-0">
+                <img
+                  src="/ask.png"
+                  alt=""
+                  className="w-40 sm:w-48 lg:w-56 h-auto object-contain"
+                />
               </div>
             </div>
           </div>
