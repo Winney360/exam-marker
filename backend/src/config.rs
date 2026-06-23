@@ -18,6 +18,7 @@ impl Config {
         let server_addr = env::var("SERVER_ADDR").unwrap_or_else(|_| "0.0.0.0".to_string());
         let server_port = env::var("SERVER_PORT")
             .ok()
+            .or_else(|| env::var("PORT").ok())
             .and_then(|p| p.parse().ok())
             .unwrap_or(3000);
 
