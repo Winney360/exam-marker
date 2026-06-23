@@ -65,7 +65,7 @@ export default function Grading() {
             </svg>
           </div>
           <div>
-            <h1 className="text-sm font-semibold text-slate-100">ExamMark AI</h1>
+            <h1 className="text-sm font-semibold text-slate-100">Rio</h1>
             <p className="text-xs text-slate-500">Grading Workspace</p>
           </div>
         </div>

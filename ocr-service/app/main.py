@@ -14,7 +14,7 @@ from .ocr_engine import extract_text
 
 load_dotenv()
 
-app = FastAPI(title="ExamMark AI OCR Service", version="0.1.0")
+app = FastAPI(title="Rio OCR Service", version="0.1.0")
 
 
 def process_image_bytes(data: bytes) -> tuple[str, float]:

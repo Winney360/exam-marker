@@ -4,7 +4,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: exammark
+      POSTGRES_DB: rio
     ports:
       - "5432:5432"
     volumes:
@@ -23,7 +23,7 @@ services:
     ports:
       - "3000:3000"
     environment:
-      DATABASE_URL: postgres://postgres:postgres@postgres:5432/exammark
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/rio
       SERVER_ADDR: 0.0.0.0
       SERVER_PORT: 3000
       OCR_SERVICE_URL: http://ocr-service:5001
