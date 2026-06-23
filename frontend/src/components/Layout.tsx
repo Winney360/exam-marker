@@ -5,7 +5,6 @@ import Logo from './Logo.tsx'
 const navItems = [
   { to: '/dashboard', label: 'Dashboard' },
   { to: '/assessments', label: 'Assessments' },
-  { to: '/grading', label: 'Grading' },
 ]
 
 export default function Layout() {
