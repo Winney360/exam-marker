@@ -1,14 +1,14 @@
 import { useState, useEffect, type FormEvent } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { api } from '../api/client.ts'
-import type { Assessment, Question, ScriptUpload, Analytics } from '../types/index.ts'
+import type { Assessment, Question, ScriptUpload, AnalyticsData } from '../types/index.ts'
 
 export default function AssessmentDetail() {
   const { id } = useParams<{ id: string }>()
   const [assessment, setAssessment] = useState<Assessment | null>(null)
   const [questions, setQuestions] = useState<Question[]>([])
   const [scripts, setScripts] = useState<ScriptUpload[]>([])
-  const [analytics, setAnalytics] = useState<Analytics | null>(null)
+  const [analytics, setAnalytics] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
 
   const [showQuestionForm, setShowQuestionForm] = useState(false)
@@ -18,6 +18,8 @@ export default function AssessmentDetail() {
   const [qKeywords, setQKeywords] = useState('')
 
   const [uploading, setUploading] = useState(false)
+  const [processing, setProcessing] = useState<string | null>(null)
+  const [marking, setMarking] = useState<string | null>(null)
 
   async function fetchData() {
     setLoading(true)
@@ -26,7 +28,7 @@ export default function AssessmentDetail() {
         api.get<Assessment>(`/assessments/${id}`),
         api.get<Question[]>(`/assessments/${id}/questions`),
         api.get<ScriptUpload[]>(`/assessments/${id}/scripts`).catch(() => [] as ScriptUpload[]),
-        api.get<Analytics>(`/assessments/${id}/analytics`).catch(() => null),
+        api.get<AnalyticsData>(`/assessments/${id}/analytics`).catch(() => null),
       ])
       setAssessment(a)
       setQuestions(q)
@@ -45,8 +47,8 @@ export default function AssessmentDetail() {
     e.preventDefault()
     await api.post(`/assessments/${id}/questions`, {
       question_number: Number(qNumber),
-      question_text: qText,
       max_marks: Number(qMax),
+      memo_text: qText,
       keywords: qKeywords.split(',').map((k) => k.trim()).filter(Boolean),
     })
     setQNumber('')
@@ -83,6 +85,46 @@ export default function AssessmentDetail() {
     }
   }
 
+  async function handleProcess(scriptId: string) {
+    setProcessing(scriptId)
+    try {
+      await api.post(`/scripts/${scriptId}/process`)
+      fetchData()
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setProcessing(null)
+    }
+  }
+
+  async function handleMark(scriptId: string) {
+    setMarking(scriptId)
+    try {
+      await api.post(`/scripts/${scriptId}/mark`)
+      fetchData()
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setMarking(null)
+    }
+  }
+
+  async function handleProcessAndMark(scriptId: string) {
+    setProcessing(scriptId)
+    try {
+      await api.post(`/scripts/${scriptId}/process`)
+      setProcessing(null)
+      setMarking(scriptId)
+      await api.post(`/scripts/${scriptId}/mark`)
+      fetchData()
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setProcessing(null)
+      setMarking(null)
+    }
+  }
+
   if (loading) return <div className="p-8 text-gray-500">Loading...</div>
   if (!assessment) return <div className="p-8 text-red-500">Assessment not found</div>
 
@@ -91,7 +133,10 @@ export default function AssessmentDetail() {
       <div>
         <Link to="/assessments" className="text-sm text-indigo-600 hover:underline">&larr; Assessments</Link>
         <h1 className="text-2xl font-bold text-gray-900 mt-1">{assessment.title}</h1>
-        <p className="text-gray-500">{assessment.subject} &middot; {assessment.total_marks} total marks</p>
+        {assessment.description && (
+          <p className="text-gray-500">{assessment.description}</p>
+        )}
+        <p className="text-sm text-gray-400">{assessment.max_mark} max marks</p>
       </div>
 
       <section>
@@ -126,7 +171,7 @@ export default function AssessmentDetail() {
               </div>
             </div>
             <div>
-              <label className="block text-xs font-medium text-gray-700 mb-1">Question Text</label>
+              <label className="block text-xs font-medium text-gray-700 mb-1">Memo Text (model answer)</label>
               <textarea required rows={2} value={qText} onChange={(e) => setQText(e.target.value)}
                 className="w-full px-2 py-1.5 border border-gray-300 rounded text-sm" />
             </div>
@@ -142,9 +187,9 @@ export default function AssessmentDetail() {
           <div className="space-y-2">
             {questions.map((q) => (
               <div key={q.id} className="bg-white rounded-lg border border-gray-200 p-4 flex items-start justify-between">
-                <div>
+                <div className="flex-1 min-w-0 mr-4">
                   <span className="text-xs font-medium text-gray-400">Q{q.question_number}</span>
-                  <p className="text-sm text-gray-900 mt-0.5">{q.question_text}</p>
+                  <p className="text-sm text-gray-900 mt-0.5">{q.memo_text}</p>
                   <p className="text-xs text-gray-400 mt-1">
                     {q.max_marks} marks &middot; Keywords: {q.keywords.join(', ')}
                   </p>
@@ -152,7 +197,7 @@ export default function AssessmentDetail() {
                 <button
                   type="button"
                   onClick={() => handleDeleteQuestion(q.id)}
-                  className="text-xs text-red-500 hover:underline"
+                  className="text-xs text-red-500 hover:underline shrink-0"
                 >
                   Delete
                 </button>
@@ -185,16 +230,61 @@ export default function AssessmentDetail() {
       {scripts.length > 0 && (
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-3">Scripts ({scripts.length})</h2>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="space-y-2">
             {scripts.map((s) => (
-              <Link
-                key={s.id}
-                to={`/scripts/${s.id}`}
-                className="block bg-white rounded-lg border border-gray-200 p-4 hover:shadow-sm transition-shadow"
-              >
-                <p className="text-sm font-medium text-gray-900 truncate">{s.filename}</p>
-                <p className="text-xs text-gray-400 mt-1">{new Date(s.uploaded_at).toLocaleString()}</p>
-              </Link>
+              <div key={s.id} className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-between">
+                <div className="flex-1 min-w-0 mr-4">
+                  <Link
+                    to={`/scripts/${s.id}`}
+                    className="text-sm font-medium text-indigo-600 hover:underline"
+                  >
+                    {s.file_path.split('/').pop() || s.file_path.split('\\').pop() || 'Script'}
+                  </Link>
+                  <span className={`ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
+                    s.status === 'completed' ? 'bg-green-100 text-green-700' :
+                    s.status === 'processing' ? 'bg-blue-100 text-blue-700' :
+                    s.status === 'failed' ? 'bg-red-100 text-red-700' :
+                    'bg-gray-100 text-gray-600'
+                  }`}>
+                    {s.status}
+                  </span>
+                  <p className="text-xs text-gray-400 mt-0.5">
+                    {s.file_type} &middot; {new Date(s.created_at).toLocaleString()}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => handleProcess(s.id)}
+                    disabled={processing === s.id || s.status === 'processing'}
+                    className="px-3 py-1.5 text-xs font-medium rounded bg-blue-50 text-blue-700 hover:bg-blue-100 disabled:opacity-50 transition-colors"
+                  >
+                    {processing === s.id ? 'Processing...' : 'Process'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleMark(s.id)}
+                    disabled={marking === s.id || s.status !== 'completed'}
+                    className="px-3 py-1.5 text-xs font-medium rounded bg-green-50 text-green-700 hover:bg-green-100 disabled:opacity-50 transition-colors"
+                  >
+                    {marking === s.id ? 'Marking...' : 'Mark'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleProcessAndMark(s.id)}
+                    disabled={processing === s.id || marking === s.id}
+                    className="px-3 py-1.5 text-xs font-medium rounded bg-indigo-50 text-indigo-700 hover:bg-indigo-100 disabled:opacity-50 transition-colors"
+                  >
+                    Process &amp; Mark
+                  </button>
+                  <Link
+                    to={`/scripts/${s.id}`}
+                    className="px-3 py-1.5 text-xs font-medium rounded bg-gray-50 text-gray-600 hover:bg-gray-100 transition-colors"
+                  >
+                    Review
+                  </Link>
+                </div>
+              </div>
             ))}
           </div>
         </section>
@@ -203,10 +293,14 @@ export default function AssessmentDetail() {
       {analytics && (
         <section>
           <h2 className="text-lg font-semibold text-gray-900 mb-3">Analytics</h2>
-          <div className="grid grid-cols-3 gap-4 mb-4">
+          <div className="grid grid-cols-4 gap-4 mb-4">
+            <div className="bg-white rounded-lg border border-gray-200 p-4 text-center">
+              <p className="text-2xl font-bold text-gray-900">{analytics.total_students}</p>
+              <p className="text-xs text-gray-500">Students</p>
+            </div>
             <div className="bg-white rounded-lg border border-gray-200 p-4 text-center">
               <p className="text-2xl font-bold text-gray-900">{analytics.overall_average.toFixed(1)}</p>
-              <p className="text-xs text-gray-500">Class Average</p>
+              <p className="text-xs text-gray-500">Average</p>
             </div>
             <div className="bg-white rounded-lg border border-gray-200 p-4 text-center">
               <p className="text-2xl font-bold text-gray-900">{analytics.overall_median.toFixed(1)}</p>
