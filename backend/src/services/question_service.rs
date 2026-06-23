@@ -78,7 +78,7 @@ pub async fn update_question(
     let question = question_repo::update_question(pool, id, req.max_marks, &req.memo_text, &req.keywords)
         .await
         .map_err(|e| match e {
-            sqlx::Error::RowNotFound => AppError::NotFound("Question not found".into()),
+            sqlx::Error::RowNotFound => AppError::NotFound("We couldn't find this question. It may have been deleted.".into()),
             other => AppError::Database(other),
         })?;
 
