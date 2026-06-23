@@ -56,6 +56,16 @@ export interface MarkResult {
   reasoning: string
 }
 
+export interface AnswerWithScore {
+  answer_id: string
+  script_id: string
+  question_number: number
+  answer_text: string
+  confidence: number
+  reasoning: string | null
+  suggested_mark: number | null
+}
+
 export interface MarkScriptResponse {
   script_id: string
   marks: MarkResult[]
