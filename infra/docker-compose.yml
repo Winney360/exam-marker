@@ -34,6 +34,13 @@ services:
     volumes:
       - uploads:/app/uploads
 
+  frontend:
+    build: ../frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+
 volumes:
   pgdata:
   uploads:
