@@ -41,50 +41,53 @@ export default function Assessments() {
 
   return (
     <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">Assessments</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-2xl font-bold text-slate-100">Assessments</h1>
         <button
           type="button"
           onClick={() => setShowForm(!showForm)}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+          className="px-5 py-2.5 bg-teal-400 text-slate-900 rounded-xl hover:bg-teal-300 transition-colors text-sm font-semibold shadow-lg shadow-teal-500/25"
         >
           {showForm ? 'Cancel' : 'New Assessment'}
         </button>
       </div>
 
       {showForm && (
-        <form onSubmit={handleCreate} className="bg-white rounded-xl border border-gray-200 p-6 mb-6 space-y-4">
+        <form onSubmit={handleCreate} className="bg-slate-900/60 backdrop-blur-md border border-slate-800/80 rounded-2xl p-6 mb-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <label className="block text-sm font-medium text-slate-400 mb-1">Title</label>
             <input
               required
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2.5 bg-slate-800/60 border border-slate-700/80 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-colors"
+              placeholder="Assessment title"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <label className="block text-sm font-medium text-slate-400 mb-1">Description</label>
             <input
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2.5 bg-slate-800/60 border border-slate-700/80 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-colors"
+              placeholder="Optional description"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Max Marks</label>
+            <label className="block text-sm font-medium text-slate-400 mb-1">Max Marks</label>
             <input
               type="number"
               required
               min={1}
               value={maxMark}
               onChange={(e) => setMaxMark(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2.5 bg-slate-800/60 border border-slate-700/80 rounded-xl text-slate-200 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-cyan-500/50 focus:border-cyan-500/50 transition-colors"
+              placeholder="e.g. 100"
             />
           </div>
           <button
             type="submit"
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+            className="px-5 py-2.5 bg-teal-400 text-slate-900 rounded-xl hover:bg-teal-300 transition-colors text-sm font-semibold shadow-lg shadow-teal-500/25"
           >
             Create
           </button>
@@ -92,33 +95,33 @@ export default function Assessments() {
       )}
 
       {loading ? (
-        <p className="text-gray-500">Loading...</p>
+        <p className="text-slate-400">Loading...</p>
       ) : assessments.length === 0 ? (
-        <div className="text-center py-16 text-gray-400">
-          <p>No assessments yet</p>
+        <div className="text-center py-20 text-slate-500">
+          <p className="text-lg text-slate-400">No assessments yet</p>
         </div>
       ) : (
-        <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+        <div className="bg-slate-900/40 backdrop-blur-md border border-slate-800/80 rounded-2xl overflow-hidden">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-200 bg-gray-50 text-left">
-                <th className="px-6 py-3 font-medium text-gray-500">Title</th>
-                <th className="px-6 py-3 font-medium text-gray-500">Description</th>
-                <th className="px-6 py-3 font-medium text-gray-500">Max Marks</th>
-                <th className="px-6 py-3 font-medium text-gray-500">Created</th>
+              <tr className="border-b border-slate-800/60 bg-slate-900/60 text-left">
+                <th className="px-6 py-4 font-medium text-slate-400">Title</th>
+                <th className="px-6 py-4 font-medium text-slate-400">Description</th>
+                <th className="px-6 py-4 font-medium text-slate-400">Max Marks</th>
+                <th className="px-6 py-4 font-medium text-slate-400">Created</th>
               </tr>
             </thead>
             <tbody>
               {assessments.map((a) => (
-                <tr key={a.id} className="border-b border-gray-100 hover:bg-gray-50">
+                <tr key={a.id} className="border-b border-slate-800/40 hover:bg-slate-800/30 transition-colors">
                   <td className="px-6 py-4">
-                    <Link to={`/assessments/${a.id}`} className="text-indigo-600 hover:underline font-medium">
+                    <Link to={`/assessments/${a.id}`} className="text-cyan-400 hover:text-cyan-300 font-medium transition-colors">
                       {a.title}
                     </Link>
                   </td>
-                  <td className="px-6 py-4 text-gray-600">{a.description || '—'}</td>
-                  <td className="px-6 py-4 text-gray-600">{a.max_mark}</td>
-                  <td className="px-6 py-4 text-gray-400 text-xs">
+                  <td className="px-6 py-4 text-slate-400">{a.description || '—'}</td>
+                  <td className="px-6 py-4 text-slate-400">{a.max_mark}</td>
+                  <td className="px-6 py-4 text-slate-600 text-xs">
                     {new Date(a.created_at).toLocaleDateString()}
                   </td>
                 </tr>
