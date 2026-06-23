@@ -36,7 +36,6 @@ pub async fn create_script(
     Ok(script)
 }
 
-#[allow(dead_code)]
 pub async fn get_script(pool: &DbPool, id: Uuid) -> Result<ScriptUpload, sqlx::Error> {
     sqlx::query_as::<_, ScriptUpload>(
         "SELECT id, assessment_id, student_id, file_path, file_type, status, created_at, updated_at FROM script_uploads WHERE id = $1",
@@ -44,4 +43,21 @@ pub async fn get_script(pool: &DbPool, id: Uuid) -> Result<ScriptUpload, sqlx::E
     .bind(id)
     .fetch_one(pool)
     .await
+}
+
+pub async fn update_script_status(
+    pool: &DbPool,
+    id: Uuid,
+    status: &str,
+) -> Result<(), sqlx::Error> {
+    let now = Utc::now();
+    sqlx::query(
+        "UPDATE script_uploads SET status = $1, updated_at = $2 WHERE id = $3",
+    )
+    .bind(status)
+    .bind(now)
+    .bind(id)
+    .execute(pool)
+    .await?;
+    Ok(())
 }
