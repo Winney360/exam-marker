@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: exammark
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  ocr-service:
+    build: ../ocr-service
+    ports:
+      - "5001:5001"
+    environment:
+      OCR_HOST: 0.0.0.0
+      OCR_PORT: 5001
+
+  backend:
+    build: ../backend
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/exammark
+      SERVER_ADDR: 0.0.0.0
+      SERVER_PORT: 3000
+      OCR_SERVICE_URL: http://ocr-service:5001
+      UPLOAD_DIR: /app/uploads
+    depends_on:
+      - postgres
+      - ocr-service
+    volumes:
+      - uploads:/app/uploads
+
+volumes:
+  pgdata:
+  uploads:
