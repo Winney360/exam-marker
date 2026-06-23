@@ -14,11 +14,11 @@ pub async fn verify_script_ownership(
     teacher_id: Uuid,
 ) -> Result<(), AppError> {
     let script = script_repo::get_script(pool, script_id).await.map_err(|e| match e {
-        sqlx::Error::RowNotFound => AppError::NotFound("Script not found".into()),
+        sqlx::Error::RowNotFound => AppError::NotFound("We couldn't find this script. It may have been deleted.".into()),
         other => AppError::Database(other),
     })?;
     assessment_repository::get_assessment(pool, script.assessment_id, teacher_id).await.map_err(|e| match e {
-        sqlx::Error::RowNotFound => AppError::NotFound("Assessment not found".into()),
+        sqlx::Error::RowNotFound => AppError::NotFound("We couldn't find this assessment. It may have been deleted.".into()),
         other => AppError::Database(other),
     })?;
     Ok(())
