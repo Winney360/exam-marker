@@ -50,7 +50,7 @@ pub async fn get_assessment(
 ) -> Result<crate::models::Assessment, AppError> {
     assessment_repository::get_assessment(pool, id, teacher_id).await.map_err(|e| {
         match e {
-            sqlx::Error::RowNotFound => AppError::NotFound("Assessment not found".into()),
+            sqlx::Error::RowNotFound => AppError::NotFound("We couldn't find this assessment. It may have been deleted.".into()),
             other => AppError::Database(other),
         }
     })
