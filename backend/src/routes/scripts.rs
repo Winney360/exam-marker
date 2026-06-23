@@ -6,13 +6,17 @@ use serde_json::json;
 use uuid::Uuid;
 
 use crate::error::AppError;
+use crate::services::assessment_service;
+use crate::services::auth_service::AuthUser;
 use crate::services::script_service;
 use crate::AppState;
 
 pub async fn list_scripts(
     State(state): State<AppState>,
+    auth: AuthUser,
     Path(assessment_id): Path<Uuid>,
 ) -> Result<Json<serde_json::Value>, AppError> {
+    assessment_service::get_assessment(&state.db, assessment_id, auth.id).await?;
     let scripts = script_service::list_scripts(&state.db, assessment_id).await?;
 
     Ok(Json(json!({ "success": true, "data": scripts })))
@@ -20,6 +24,7 @@ pub async fn list_scripts(
 
 pub async fn upload_script(
     State(state): State<AppState>,
+    auth: AuthUser,
     Path(assessment_id): Path<Uuid>,
     mut multipart: Multipart,
 ) -> Result<Json<serde_json::Value>, AppError> {
