@@ -44,7 +44,7 @@ impl OcrClient {
 
         let file_bytes = tokio::fs::read(file_path)
             .await
-            .map_err(|e| AppError::Internal(format!("Failed to read file for OCR: {}", e)))?;
+            .map_err(|e| AppError::Internal(format!("We couldn't read the file for OCR processing. It may have been moved or deleted. ({})", e)))?;
 
         let file_name = file_path
             .file_name()
@@ -55,7 +55,7 @@ impl OcrClient {
         let file_part = multipart::Part::bytes(file_bytes)
             .file_name(file_name)
             .mime_str("application/octet-stream")
-            .map_err(|e| AppError::Internal(format!("Failed to create multipart part: {}", e)))?;
+            .map_err(|e| AppError::Internal(format!("We couldn't prepare the file for OCR processing. ({})", e)))?;
 
         let form = multipart::Form::new().part("file", file_part);
 
@@ -65,23 +65,19 @@ impl OcrClient {
             .multipart(form)
             .send()
             .await
-            .map_err(|e| AppError::Internal(format!("OCR service request failed: {}", e)))?;
+            .map_err(|e| AppError::Internal(format!("We couldn't reach the OCR processing service. Please try again. ({})", e)))?;
 
         if !resp.status().is_success() {
             let status = resp.status();
-            let body = resp
-                .text()
-                .await
-                .unwrap_or_else(|_| "unknown".to_string());
             return Err(AppError::Internal(format!(
-                "OCR service returned {status}: {body}"
+                "The OCR service encountered an error (status {status}). Please try again later."
             )));
         }
 
         let ocr_response: OcrResponse = resp
             .json()
             .await
-            .map_err(|e| AppError::Internal(format!("Failed to parse OCR response: {}", e)))?;
+            .map_err(|e| AppError::Internal(format!("We couldn't understand the response from the OCR service. ({})", e)))?;
 
         Ok(ocr_response)
     }
