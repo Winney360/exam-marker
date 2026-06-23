@@ -92,6 +92,10 @@ async fn main() {
             "/scripts/{id}/marks",
             get(routes::review::get_marks),
         )
+        .route(
+            "/scripts/{id}/answers",
+            get(routes::review::get_answers),
+        )
         .route("/marks/{id}", put(routes::review::override_mark))
         .layer(cors)
         .layer(TraceLayer::new_for_http())
