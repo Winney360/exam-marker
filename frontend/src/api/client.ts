@@ -4,6 +4,12 @@ function getToken(): string | null {
   return localStorage.getItem('token')
 }
 
+interface ApiEnvelope<T> {
+  success: boolean
+  data?: T
+  error?: string
+}
+
 async function request<T>(
   method: string,
   path: string,
@@ -26,14 +32,15 @@ async function request<T>(
 
   const res = await fetch(`${BASE}${path}`, { method, headers, body: fetchBody })
 
-  if (!res.ok) {
-    const text = await res.text()
-    throw new Error(text || `HTTP ${res.status}`)
-  }
-
   if (res.status === 204) return undefined as T
 
-  return res.json() as Promise<T>
+  const envelope: ApiEnvelope<T> = await res.json()
+
+  if (!envelope.success) {
+    throw new Error(envelope.error || `Request failed`)
+  }
+
+  return envelope.data as T
 }
 
 export const api = {
