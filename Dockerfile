@@ -1,4 +1,4 @@
-FROM rust:1.86-slim-bookworm AS builder
+FROM rust:slim AS builder
 WORKDIR /app
 COPY backend/ .
 RUN cargo build --release
