@@ -9,6 +9,7 @@ import Assessments from './pages/Assessments.tsx'
 import AssessmentDetail from './pages/AssessmentDetail.tsx'
 import ScriptReview from './pages/ScriptReview.tsx'
 import Analytics from './pages/Analytics.tsx'
+import Grading from './pages/Grading.tsx'
 
 function App() {
   return (
@@ -24,6 +25,9 @@ function App() {
             <Route path="/assessments/:id/analytics" element={<Analytics />} />
             <Route path="/scripts/:id" element={<ScriptReview />} />
           </Route>
+        </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/grading" element={<Grading />} />
         </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
