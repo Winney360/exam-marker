@@ -43,6 +43,15 @@ pub async fn get_marks_for_script(
     .await
 }
 
+pub async fn get_mark_by_id(pool: &DbPool, id: Uuid) -> Result<FinalMark, sqlx::Error> {
+    sqlx::query_as::<_, FinalMark>(
+        "SELECT id, script_id, question_number, ai_suggested_mark, teacher_final_mark, is_override, override_reason, created_at, updated_at FROM final_marks WHERE id = $1",
+    )
+    .bind(id)
+    .fetch_one(pool)
+    .await
+}
+
 pub async fn upsert_final_mark(
     pool: &DbPool,
     script_id: Uuid,
