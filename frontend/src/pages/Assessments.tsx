@@ -1,15 +1,17 @@
 import { useState, useEffect, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client.ts'
+import { useAuth } from '../hooks/useAuth.tsx'
 import type { Assessment } from '../types/index.ts'
 
 export default function Assessments() {
+  const { user } = useAuth()
   const [assessments, setAssessments] = useState<Assessment[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [title, setTitle] = useState('')
-  const [subject, setSubject] = useState('')
-  const [totalMarks, setTotalMarks] = useState('')
+  const [description, setDescription] = useState('')
+  const [maxMark, setMaxMark] = useState('')
 
   async function fetchAll() {
     setLoading(true)
@@ -28,13 +30,14 @@ export default function Assessments() {
   async function handleCreate(e: FormEvent) {
     e.preventDefault()
     await api.post('/assessments', {
+      teacher_id: user?.user_id ?? '00000000-0000-0000-0000-000000000000',
       title,
-      subject,
-      total_marks: Number(totalMarks),
+      description: description || null,
+      max_mark: Number(maxMark),
     })
     setTitle('')
-    setSubject('')
-    setTotalMarks('')
+    setDescription('')
+    setMaxMark('')
     setShowForm(false)
     fetchAll()
   }
@@ -64,22 +67,21 @@ export default function Assessments() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
             <input
-              required
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Total Marks</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Max Marks</label>
             <input
               type="number"
               required
               min={1}
-              value={totalMarks}
-              onChange={(e) => setTotalMarks(e.target.value)}
+              value={maxMark}
+              onChange={(e) => setMaxMark(e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
           </div>
@@ -104,8 +106,8 @@ export default function Assessments() {
             <thead>
               <tr className="border-b border-gray-200 bg-gray-50 text-left">
                 <th className="px-6 py-3 font-medium text-gray-500">Title</th>
-                <th className="px-6 py-3 font-medium text-gray-500">Subject</th>
-                <th className="px-6 py-3 font-medium text-gray-500">Total Marks</th>
+                <th className="px-6 py-3 font-medium text-gray-500">Description</th>
+                <th className="px-6 py-3 font-medium text-gray-500">Max Marks</th>
                 <th className="px-6 py-3 font-medium text-gray-500">Created</th>
               </tr>
             </thead>
@@ -117,8 +119,8 @@ export default function Assessments() {
                       {a.title}
                     </Link>
                   </td>
-                  <td className="px-6 py-4 text-gray-600">{a.subject}</td>
-                  <td className="px-6 py-4 text-gray-600">{a.total_marks}</td>
+                  <td className="px-6 py-4 text-gray-600">{a.description || '—'}</td>
+                  <td className="px-6 py-4 text-gray-600">{a.max_mark}</td>
                   <td className="px-6 py-4 text-gray-400 text-xs">
                     {new Date(a.created_at).toLocaleDateString()}
                   </td>
