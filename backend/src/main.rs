@@ -62,6 +62,10 @@ async fn main() {
         .route("/assessments", post(routes::assessments::create_assessment))
         .route("/assessments/{id}", get(routes::assessments::get_assessment))
         .route(
+            "/assessments/{id}/analytics",
+            get(routes::analytics::get_analytics),
+        )
+        .route(
             "/assessments/{id}/scripts",
             post(routes::scripts::upload_script),
         )
