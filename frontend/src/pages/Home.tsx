@@ -197,7 +197,7 @@ export default function Home() {
 
       <main>
         {/* Hero */}
-        <section className="relative pt-24 pb-20 px-6 sm:px-8 overflow-hidden">
+        <section className="relative pt-16 pb-20 px-6 sm:px-8 overflow-hidden">
           <div className="absolute inset-0">
             <img
               src="/hero.jpeg"
