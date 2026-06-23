@@ -1,3 +1,4 @@
+pub mod analytics;
 pub mod assessments;
 pub mod health;
 pub mod marking;
