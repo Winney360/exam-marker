@@ -311,32 +311,40 @@ export default function Home() {
 
         {/* CTA */}
         <section className="py-24 px-6 sm:px-8">
-          <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
-            <div className="flex-1 text-center">
-              <h2 className="text-2xl lg:text-3xl font-bold text-slate-100 tracking-tight whitespace-nowrap">
-                Ready to save hours on grading?
-              </h2>
-              <p className="mt-4 text-lg text-slate-400">
-                Get started for free. No credit card required.
-              </p>
-              <div className="mt-8 flex justify-center">
-                <Link
-                  to="/login"
-                  className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-medium bg-teal-400 text-slate-900 rounded-xl hover:bg-teal-300 transition-all shadow-xl shadow-teal-500/25"
-                >
-                  Start grading free
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                  </svg>
-                </Link>
+          <div className="max-w-5xl mx-auto">
+            <div className="relative rounded-3xl p-8 sm:p-12 lg:p-14 shadow-2xl overflow-hidden border border-slate-800/60 flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12"
+              style={{
+                background: 'linear-gradient(135deg, rgba(6,182,212,0.12), rgba(20,184,166,0.08))',
+                backdropFilter: 'blur(12px)',
+              }}>
+              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-cyan-500/5" />
+              <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-teal-500/5" />
+              <div className="relative flex-1 text-center">
+                <h2 className="text-2xl lg:text-3xl font-bold text-slate-100 tracking-tight whitespace-nowrap">
+                  Ready to save hours on grading?
+                </h2>
+                <p className="mt-4 text-lg text-slate-400">
+                  Get started for free. No credit card required.
+                </p>
+                <div className="mt-8 flex justify-center">
+                  <Link
+                    to="/login"
+                    className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-medium bg-teal-400 text-slate-900 rounded-xl hover:bg-teal-300 transition-all shadow-xl shadow-teal-500/25"
+                  >
+                    Start grading free
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                    </svg>
+                  </Link>
+                </div>
               </div>
-            </div>
-            <div className="flex-shrink-0">
-              <img
-                src="/ask.png"
-                alt=""
-                className="w-80 sm:w-96 lg:w-[32rem] h-auto object-contain"
-              />
+              <div className="relative flex-shrink-0">
+                <img
+                  src="/ask.png"
+                  alt=""
+                  className="w-80 sm:w-96 lg:w-[32rem] h-auto object-contain"
+                />
+              </div>
             </div>
           </div>
         </section>
