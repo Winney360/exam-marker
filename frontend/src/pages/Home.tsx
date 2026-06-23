@@ -342,7 +342,7 @@ export default function Home() {
                 <img
                   src="/ask.png"
                   alt=""
-                  className="w-40 sm:w-48 lg:w-56 h-auto object-contain"
+                  className="w-56 sm:w-64 lg:w-80 h-auto object-contain"
                 />
               </div>
             </div>
