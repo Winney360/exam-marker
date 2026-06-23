@@ -1,6 +1,6 @@
 use axum::{
     Router,
-    routing::{get, post},
+    routing::{delete, get, post, put},
 };
 use tower_http::cors::CorsLayer;
 use tower_http::trace::TraceLayer;
@@ -64,6 +64,15 @@ async fn main() {
         .route(
             "/assessments/{id}/scripts",
             post(routes::scripts::upload_script),
+        )
+        .route(
+            "/assessments/{id}/questions",
+            get(routes::questions::list_questions).post(routes::questions::create_question),
+        )
+        .route(
+            "/assessments/{assessment_id}/questions/{question_id}",
+            axum::routing::put(routes::questions::update_question)
+                .delete(routes::questions::delete_question),
         )
         .route(
             "/scripts/{id}/process",
