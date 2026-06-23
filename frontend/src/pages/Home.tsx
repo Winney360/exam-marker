@@ -202,7 +202,7 @@ export default function Home() {
             <img
               src="/hero.jpeg"
               alt=""
-              className="w-full h-full object-contain"
+              className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950" />
           </div>
