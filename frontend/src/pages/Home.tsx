@@ -1,42 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.tsx'
 
-function HeroIllustration() {
-  return (
-    <svg viewBox="0 0 400 340" fill="none" className="w-full max-w-lg" xmlns="http://www.w3.org/2000/svg">
-      <rect x="60" y="40" width="280" height="200" rx="16" fill="url(#hero-grad)" className="drop-shadow-xl" />
-      <rect x="80" y="60" width="100" height="8" rx="4" fill="#fff" fillOpacity="0.4" />
-      <rect x="80" y="80" width="80" height="8" rx="4" fill="#fff" fillOpacity="0.25" />
-      <rect x="80" y="110" width="140" height="6" rx="3" fill="#fff" fillOpacity="0.15" />
-      <rect x="80" y="126" width="120" height="6" rx="3" fill="#fff" fillOpacity="0.15" />
-      <rect x="80" y="142" width="160" height="6" rx="3" fill="#fff" fillOpacity="0.15" />
-      <rect x="80" y="170" width="50" height="50" rx="10" fill="#fff" fillOpacity="0.15" />
-      <rect x="142" y="180" width="100" height="6" rx="3" fill="#fff" fillOpacity="0.12" />
-      <rect x="142" y="194" width="70" height="6" rx="3" fill="#fff" fillOpacity="0.12" />
-      <circle cx="280" cy="170" r="32" fill="#fff" fillOpacity="0.2" />
-      <path d="M268 170l8 8 16-16" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" fillOpacity="0.9" />
-      <circle cx="48" cy="48" r="4" fill="#14b8a6" fillOpacity="0.4" />
-      <circle cx="352" cy="32" r="6" fill="#14b8a6" fillOpacity="0.3" />
-      <circle cx="370" cy="180" r="3" fill="#06b6d4" fillOpacity="0.35" />
-      <circle cx="30" cy="200" r="5" fill="#14b8a6" fillOpacity="0.3" />
-      <circle cx="340" cy="260" r="4" fill="#06b6d4" fillOpacity="0.25" />
-      <circle cx="60" cy="280" r="3" fill="#14b8a6" fillOpacity="0.3" />
-      <rect x="70" y="265" width="24" height="40" rx="4" fill="#06b6d4" fillOpacity="0.3" />
-      <rect x="102" y="240" width="24" height="65" rx="4" fill="#14b8a6" fillOpacity="0.4" />
-      <rect x="134" y="255" width="24" height="50" rx="4" fill="#06b6d4" fillOpacity="0.35" />
-      <rect x="166" y="225" width="24" height="80" rx="4" fill="#14b8a6" fillOpacity="0.5" />
-      <rect x="198" y="250" width="24" height="55" rx="4" fill="#06b6d4" fillOpacity="0.3" />
-      <rect x="230" y="235" width="24" height="70" rx="4" fill="#14b8a6" fillOpacity="0.45" />
-      <rect x="262" y="260" width="24" height="45" rx="4" fill="#06b6d4" fillOpacity="0.3" />
-      <defs>
-        <linearGradient id="hero-grad" x1="0" y1="0" x2="0" y2="1">
-          <stop stopColor="#06b6d4" />
-          <stop offset="1" stopColor="#14b8a6" />
-        </linearGradient>
-      </defs>
-    </svg>
-  )
-}
+
 
 function UploadIllustration() {
   return (
@@ -232,52 +197,53 @@ export default function Home() {
 
       <main>
         {/* Hero */}
-        <section className="pt-32 pb-20 px-6 sm:px-8 overflow-hidden">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-              <div className="flex-1 max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 mb-8">
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456Z" />
-                  </svg>
-                  AI-Powered Grading
-                </div>
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15]">
-                  <span className="text-slate-100">Grade handwritten exams</span>
-                  <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">
-                    at the speed of AI
-                  </span>
-                </h1>
-                <p className="mt-6 text-lg text-slate-400 leading-relaxed max-w-xl">
-                  Stop spending weekends grading. Upload scanned answer scripts, let OCR extract
-                  and score them against your marking scheme, then review and finalize marks in
-                  minutes.
-                </p>
-                <div className="mt-10 flex flex-col sm:flex-row items-start gap-4">
-                  <Link
-                    to="/login"
-                    className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-medium bg-gradient-to-r from-cyan-500 to-teal-600 text-white rounded-xl hover:from-cyan-400 hover:to-teal-500 transition-all shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40"
-                  >
-                    Start grading free
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                    </svg>
-                  </Link>
-                  <Link
-                    to="/login"
-                    className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-medium text-slate-300 bg-slate-900/60 backdrop-blur-md border border-slate-800/80 rounded-xl hover:bg-slate-800/60 transition-colors"
-                  >
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
-                    </svg>
-                    Sign in
-                  </Link>
-                </div>
-              </div>
-              <div className="flex-1 flex justify-center lg:justify-end">
-                <HeroIllustration />
-              </div>
+        <section className="relative pt-32 pb-20 px-6 sm:px-8 overflow-hidden">
+          <div className="absolute inset-0 max-h-[80%]">
+            <img
+              src="/hero.jpeg"
+              alt=""
+              className="w-full h-full object-cover object-bottom"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/85 to-slate-950" />
+          </div>
+          <div className="relative max-w-3xl mx-auto text-center">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium text-cyan-300 bg-cyan-500/10 backdrop-blur-sm border border-cyan-500/20 mb-8">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456Z" />
+              </svg>
+              AI-Powered Grading
+            </div>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.15]">
+              <span className="text-white">Grade handwritten exams</span>
+              <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-teal-300">
+                at the speed of AI
+              </span>
+            </h1>
+            <p className="mt-6 text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto">
+              Stop spending weekends grading. Upload scanned answer scripts, let OCR extract
+              and score them against your marking scheme, then review and finalize marks in
+              minutes.
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link
+                to="/login"
+                className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-medium bg-gradient-to-r from-cyan-500 to-teal-600 text-white rounded-xl hover:from-cyan-400 hover:to-teal-500 transition-all shadow-xl shadow-cyan-500/25 hover:shadow-cyan-500/40"
+              >
+                Start grading free
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                </svg>
+              </Link>
+              <Link
+                to="/login"
+                className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-medium text-slate-200 bg-slate-900/60 backdrop-blur-md border border-slate-700/80 rounded-xl hover:bg-slate-800/60 transition-colors"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                </svg>
+                Sign in
+              </Link>
             </div>
           </div>
         </section>
