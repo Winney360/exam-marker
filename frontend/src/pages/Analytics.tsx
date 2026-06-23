@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { api } from '../api/client.ts'
-import type { Analytics as AnalyticsData } from '../types/index.ts'
+import type { AnalyticsData } from '../types/index.ts'
 
 export default function Analytics() {
   const { id } = useParams<{ id: string }>()
@@ -58,10 +58,10 @@ export default function Analytics() {
               </tr>
             </thead>
             <tbody>
-              {data.per_question.map((q) => (
+              {data.question_breakdown.map((q) => (
                 <tr key={q.question_number} className="border-b border-gray-100">
                   <td className="px-6 py-4 font-medium text-gray-900">Q{q.question_number}</td>
-                  <td className="px-6 py-4 text-gray-600">{q.average.toFixed(1)}</td>
+                  <td className="px-6 py-4 text-gray-600">{q.average_mark.toFixed(1)}</td>
                   <td className="px-6 py-4 text-gray-600">{q.max_marks}</td>
                   <td className="px-6 py-4">
                     <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-medium ${
