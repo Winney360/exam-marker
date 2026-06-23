@@ -1,6 +1,6 @@
 use axum::{
     Router,
-    routing::{get, post},
+    routing::{get, post, put},
 };
 use tower_http::cors::CorsLayer;
 use tower_http::trace::TraceLayer;
@@ -79,6 +79,11 @@ async fn main() {
             post(routes::process::process_script),
         )
         .route("/scripts/{id}/mark", post(routes::marking::mark_script))
+        .route(
+            "/scripts/{id}/marks",
+            get(routes::review::get_marks),
+        )
+        .route("/marks/{id}", put(routes::review::override_mark))
         .layer(cors)
         .layer(TraceLayer::new_for_http())
         .with_state(state);
