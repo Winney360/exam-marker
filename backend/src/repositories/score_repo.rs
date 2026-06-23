@@ -114,3 +114,29 @@ pub async fn upsert_final_mark(
         Ok(created)
     }
 }
+
+pub async fn override_final_mark(
+    pool: &DbPool,
+    id: Uuid,
+    teacher_mark: f32,
+    reason: Option<&str>,
+) -> Result<FinalMark, sqlx::Error> {
+    let now = Utc::now();
+
+    let mark = sqlx::query_as::<_, FinalMark>(
+        r#"
+        UPDATE final_marks
+        SET teacher_final_mark = $1, is_override = true, override_reason = $2, updated_at = $3
+        WHERE id = $4
+        RETURNING id, script_id, question_number, ai_suggested_mark, teacher_final_mark, is_override, override_reason, created_at, updated_at
+        "#,
+    )
+    .bind(teacher_mark)
+    .bind(reason)
+    .bind(now)
+    .bind(id)
+    .fetch_one(pool)
+    .await?;
+
+    Ok(mark)
+}
