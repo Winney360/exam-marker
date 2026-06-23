@@ -65,6 +65,10 @@ async fn main() {
             "/assessments/{id}/scripts",
             post(routes::scripts::upload_script),
         )
+        .route(
+            "/scripts/{id}/process",
+            post(routes::process::process_script),
+        )
         .layer(cors)
         .layer(TraceLayer::new_for_http())
         .with_state(state);
