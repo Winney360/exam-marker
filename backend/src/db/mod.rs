@@ -109,5 +109,11 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
     .execute(pool)
     .await?;
 
+    sqlx::query(
+        "CREATE UNIQUE INDEX IF NOT EXISTS idx_final_marks_script_q ON final_marks (script_id, question_number)",
+    )
+    .execute(pool)
+    .await?;
+
     Ok(())
 }
