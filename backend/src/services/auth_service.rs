@@ -128,6 +128,7 @@ fn generate_token(user_id: Uuid, email: &str, secret: &str) -> Result<String, Ap
 
 pub struct AuthUser {
     pub id: Uuid,
+    #[allow(dead_code)]
     pub email: String,
 }
 
