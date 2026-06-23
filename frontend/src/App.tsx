@@ -1,14 +1,31 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './hooks/useAuth.tsx'
+import ProtectedRoute from './components/ProtectedRoute.tsx'
 import Layout from './components/Layout.tsx'
+import Login from './pages/Login.tsx'
+import Dashboard from './pages/Dashboard.tsx'
+import Assessments from './pages/Assessments.tsx'
+import AssessmentDetail from './pages/AssessmentDetail.tsx'
+import ScriptReview from './pages/ScriptReview.tsx'
+import Analytics from './pages/Analytics.tsx'
 
 function App() {
   return (
-    <Routes>
-      <Route element={<Layout />}>
-        <Route path="/" element={<div className="p-8"><h1 className="text-2xl font-bold">Dashboard</h1></div>} />
+    <AuthProvider>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/assessments" element={<Assessments />} />
+            <Route path="/assessments/:id" element={<AssessmentDetail />} />
+            <Route path="/assessments/:id/analytics" element={<Analytics />} />
+            <Route path="/scripts/:id" element={<ScriptReview />} />
+          </Route>
+        </Route>
         <Route path="*" element={<Navigate to="/" replace />} />
-      </Route>
-    </Routes>
+      </Routes>
+    </AuthProvider>
   )
 }
 
