@@ -37,7 +37,7 @@ pub async fn upload_script(
     while let Some(field) = multipart
         .next_field()
         .await
-        .map_err(|e| AppError::BadRequest(format!("Invalid multipart: {}", e)))?
+        .map_err(|e| AppError::BadRequest(format!("Something went wrong while parsing the upload. Please try again. ({})", e)))?
     {
         let name = field.name().unwrap_or("").to_string();
         match name.as_str() {
@@ -47,7 +47,7 @@ pub async fn upload_script(
                     field
                         .bytes()
                         .await
-                        .map_err(|e| AppError::BadRequest(format!("Failed to read file: {}", e)))?
+                        .map_err(|e| AppError::BadRequest(format!("We couldn't read the uploaded file. It may be corrupted or in an unsupported format. ({})", e)))?
                         .to_vec(),
                 );
             }
@@ -56,14 +56,14 @@ pub async fn upload_script(
                     field
                         .text()
                         .await
-                        .map_err(|e| AppError::BadRequest(format!("Failed to read student_id: {}", e)))?,
+                        .map_err(|e| AppError::BadRequest(format!("We couldn't read the student ID from the upload. ({})", e)))?,
                 );
             }
             _ => {}
         }
     }
 
-    let bytes = file_bytes.ok_or_else(|| AppError::BadRequest("No file provided".into()))?;
+    let bytes = file_bytes.ok_or_else(|| AppError::BadRequest("Please select a file to upload.".into()))?;
     let fname = file_name.unwrap_or_else(|| "unnamed".to_string());
 
     let script = script_service::upload_script(
