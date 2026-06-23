@@ -4,7 +4,7 @@ use uuid::Uuid;
 use crate::db::DbPool;
 use crate::error::AppError;
 use crate::models::FinalMark;
-use crate::repositories::{assessment_repository, score_repo, script_repo};
+use crate::repositories::{answer_repo, assessment_repository, score_repo, script_repo};
 
 pub async fn verify_mark_ownership(
     pool: &DbPool,
@@ -79,4 +79,12 @@ pub async fn override_mark(
             .await?;
 
     Ok(MarkWithDetails::from(updated))
+}
+
+pub async fn get_answers(
+    pool: &DbPool,
+    script_id: Uuid,
+) -> Result<Vec<answer_repo::AnswerWithScore>, AppError> {
+    let answers = answer_repo::get_answers_with_scores(pool, script_id).await?;
+    Ok(answers)
 }
