@@ -4,6 +4,7 @@ import { useAuth } from '../hooks/useAuth.tsx'
 const navItems = [
   { to: '/dashboard', label: 'Dashboard' },
   { to: '/assessments', label: 'Assessments' },
+  { to: '/grading', label: 'Grading' },
 ]
 
 export default function Layout() {
