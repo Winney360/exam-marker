@@ -33,16 +33,20 @@ pub async fn create_assessment(
     Ok(assessment)
 }
 
-pub async fn get_assessment(pool: &DbPool, id: Uuid) -> Result<Assessment, sqlx::Error> {
+pub async fn get_assessment(
+    pool: &DbPool,
+    id: Uuid,
+    teacher_id: Uuid,
+) -> Result<Assessment, sqlx::Error> {
     sqlx::query_as::<_, Assessment>(
-        "SELECT id, teacher_id, title, description, max_mark, created_at, updated_at FROM assessments WHERE id = $1",
+        "SELECT id, teacher_id, title, description, max_mark, created_at, updated_at FROM assessments WHERE id = $1 AND teacher_id = $2",
     )
     .bind(id)
+    .bind(teacher_id)
     .fetch_one(pool)
     .await
 }
 
-#[allow(dead_code)]
 pub async fn list_assessments(
     pool: &DbPool,
     teacher_id: Uuid,
@@ -51,14 +55,6 @@ pub async fn list_assessments(
         "SELECT id, teacher_id, title, description, max_mark, created_at, updated_at FROM assessments WHERE teacher_id = $1 ORDER BY created_at DESC",
     )
     .bind(teacher_id)
-    .fetch_all(pool)
-    .await
-}
-
-pub async fn list_all_assessments(pool: &DbPool) -> Result<Vec<Assessment>, sqlx::Error> {
-    sqlx::query_as::<_, Assessment>(
-        "SELECT id, teacher_id, title, description, max_mark, created_at, updated_at FROM assessments ORDER BY created_at DESC",
-    )
     .fetch_all(pool)
     .await
 }
