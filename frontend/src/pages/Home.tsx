@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.tsx'
+import Logo from '../components/Logo.tsx'
 
 
 
@@ -146,10 +147,8 @@ export default function Home() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-950">
         <div className="text-center max-w-md mx-auto px-6">
-          <div className="w-16 h-16 bg-slate-900/60 backdrop-blur-sm border border-slate-800/80 rounded-2xl flex items-center justify-center mx-auto mb-6">
-            <svg className="w-8 h-8 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />
-            </svg>
+          <div className="mx-auto mb-6">
+            <Logo className="w-16 h-16" />
           </div>
           <h1 className="text-2xl font-bold text-slate-100 mb-2">Welcome back, {user.name}</h1>
           <p className="text-slate-500 mb-8">Pick up where you left off.</p>
@@ -173,12 +172,7 @@ export default function Home() {
       <header className="sticky top-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-800/60">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 h-16 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg shadow-teal-500/20"
-              style={{ background: 'linear-gradient(135deg, #06b6d4, #14b8a6)' }}>
-              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />
-              </svg>
-            </div>
+            <Logo />
             <span className="text-lg font-bold text-slate-100">Rio</span>
           </Link>
           <nav className="flex items-center gap-3">
@@ -352,12 +346,7 @@ export default function Home() {
       <footer className="border-t border-slate-800/60 py-12 px-6 sm:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded flex items-center justify-center"
-              style={{ background: 'linear-gradient(135deg, #06b6d4, #14b8a6)' }}>
-              <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />
-              </svg>
-            </div>
+            <Logo className="w-6 h-6" />
             <span className="text-sm font-semibold text-slate-300">Rio</span>
           </div>
           <p className="text-sm text-slate-600">Built for teachers who deserve better tools.</p>

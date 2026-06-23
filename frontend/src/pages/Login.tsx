@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth.tsx'
+import Logo from '../components/Logo.tsx'
 
 export default function Login() {
   const { login, register } = useAuth()
@@ -29,9 +30,10 @@ export default function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm">
-        <h1 className="text-2xl font-bold text-center text-indigo-600 mb-6">
-          Rio
-        </h1>
+        <div className="flex flex-col items-center gap-3 mb-6">
+          <Logo className="w-12 h-12" />
+          <h1 className="text-2xl font-bold text-slate-800">Rio</h1>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           {isRegister && (
             <div>
