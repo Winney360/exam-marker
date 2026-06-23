@@ -32,7 +32,7 @@ pub async fn upload_script(
     student_id: Option<&str>,
 ) -> Result<ScriptUpload, AppError> {
     let student_uuid = match student_id {
-        Some(s) => Uuid::parse_str(s).map_err(|_| AppError::BadRequest("Invalid student_id UUID".into()))?,
+        Some(s) => Uuid::parse_str(s).map_err(|_| AppError::BadRequest("The student ID provided is not in the correct format.".into()))?,
         None => Uuid::new_v4(),
     };
 
@@ -50,11 +50,11 @@ pub async fn upload_script(
 
     tokio::fs::create_dir_all(&sub_dir)
         .await
-        .map_err(|e| AppError::Internal(format!("Failed to create upload directory: {}", e)))?;
+        .map_err(|e| AppError::Internal(format!("We couldn't set up the upload folder. Please check permissions and try again. ({})", e)))?;
 
     tokio::fs::write(&save_path, &file_bytes)
         .await
-        .map_err(|e| AppError::Internal(format!("Failed to save file: {}", e)))?;
+        .map_err(|e| AppError::Internal(format!("We couldn't save the uploaded file. Please try again. ({})", e)))?;
 
     let script = script_repo::create_script(pool, script_id, assessment_id, student_uuid, &save_path, &file_type)
         .await?;
@@ -75,7 +75,7 @@ pub async fn get_script(pool: &DbPool, id: Uuid) -> Result<ScriptUpload, AppErro
     script_repo::get_script(pool, id)
         .await
         .map_err(|e| match e {
-            sqlx::Error::RowNotFound => AppError::NotFound("Script not found".into()),
+            sqlx::Error::RowNotFound => AppError::NotFound("We couldn't find this script. It may have been deleted.".into()),
             other => AppError::Database(other),
         })
 }
@@ -83,12 +83,12 @@ pub async fn get_script(pool: &DbPool, id: Uuid) -> Result<ScriptUpload, AppErro
 pub async fn delete_script(pool: &DbPool, id: Uuid) -> Result<(), AppError> {
     let file_path = script_repo::delete_script(pool, id)
         .await?
-        .ok_or_else(|| AppError::NotFound("Script not found".into()))?;
+        .ok_or_else(|| AppError::NotFound("We couldn't find this script. It may have been deleted.".into()))?;
     let path = std::path::Path::new(&file_path);
     if path.exists() {
         tokio::fs::remove_file(path)
             .await
-            .map_err(|e| AppError::Internal(format!("Failed to delete file: {}", e)))?;
+            .map_err(|e| AppError::Internal(format!("We couldn't delete the file. Please try again. ({})", e)))?;
     }
     Ok(())
 }
