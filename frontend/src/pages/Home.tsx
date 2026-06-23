@@ -317,8 +317,6 @@ export default function Home() {
                 background: 'linear-gradient(135deg, rgba(6,182,212,0.12), rgba(20,184,166,0.08))',
                 backdropFilter: 'blur(12px)',
               }}>
-              <div className="absolute -top-20 -right-20 w-64 h-64 rounded-full bg-cyan-500/5" />
-              <div className="absolute -bottom-16 -left-16 w-48 h-48 rounded-full bg-teal-500/5" />
               <div className="relative flex-1 text-center">
                 <h2 className="text-2xl lg:text-3xl font-bold text-slate-100 tracking-tight whitespace-nowrap">
                   Ready to save hours on grading?
