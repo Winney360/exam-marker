@@ -126,7 +126,6 @@ fn generate_token(user_id: Uuid, email: &str, secret: &str) -> Result<String, Ap
     .map_err(|e| AppError::Internal(format!("Failed to create token: {}", e)))
 }
 
-#[allow(dead_code)]
 pub struct AuthUser {
     pub id: Uuid,
     pub email: String,
