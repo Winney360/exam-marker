@@ -6,7 +6,6 @@ use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CreateAssessmentRequest {
-    pub teacher_id: String,
     pub title: String,
     pub description: Option<String>,
     pub max_mark: i32,
@@ -23,11 +22,9 @@ pub struct CreateAssessmentResponse {
 
 pub async fn create_assessment(
     pool: &DbPool,
+    teacher_id: Uuid,
     req: CreateAssessmentRequest,
 ) -> Result<CreateAssessmentResponse, AppError> {
-    let teacher_id = Uuid::parse_str(&req.teacher_id)
-        .map_err(|_| AppError::BadRequest("Invalid teacher_id UUID".into()))?;
-
     let assessment = assessment_repository::create_assessment(
         pool,
         teacher_id,
@@ -46,8 +43,12 @@ pub async fn create_assessment(
     })
 }
 
-pub async fn get_assessment(pool: &DbPool, id: Uuid) -> Result<crate::models::Assessment, AppError> {
-    assessment_repository::get_assessment(pool, id).await.map_err(|e| {
+pub async fn get_assessment(
+    pool: &DbPool,
+    id: Uuid,
+    teacher_id: Uuid,
+) -> Result<crate::models::Assessment, AppError> {
+    assessment_repository::get_assessment(pool, id, teacher_id).await.map_err(|e| {
         match e {
             sqlx::Error::RowNotFound => AppError::NotFound("Assessment not found".into()),
             other => AppError::Database(other),
@@ -55,8 +56,8 @@ pub async fn get_assessment(pool: &DbPool, id: Uuid) -> Result<crate::models::As
     })
 }
 
-pub async fn list_assessments(pool: &DbPool) -> Result<Vec<crate::models::Assessment>, AppError> {
-    assessment_repository::list_all_assessments(pool)
+pub async fn list_assessments(pool: &DbPool, teacher_id: Uuid) -> Result<Vec<crate::models::Assessment>, AppError> {
+    assessment_repository::list_assessments(pool, teacher_id)
         .await
         .map_err(AppError::Database)
 }
