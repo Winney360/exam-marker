@@ -7,12 +7,16 @@ use uuid::Uuid;
 
 use crate::error::AppError;
 use crate::services::analytics_service;
+use crate::services::assessment_service;
+use crate::services::auth_service::AuthUser;
 use crate::AppState;
 
 pub async fn get_analytics(
     State(state): State<AppState>,
+    auth: AuthUser,
     Path(assessment_id): Path<Uuid>,
 ) -> Result<Json<serde_json::Value>, AppError> {
+    assessment_service::get_assessment(&state.db, assessment_id, auth.id).await?;
     let analytics = analytics_service::get_analytics(&state.db, assessment_id).await?;
 
     Ok(Json(json!({ "success": true, "data": analytics })))
