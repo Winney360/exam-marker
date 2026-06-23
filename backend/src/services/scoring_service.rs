@@ -84,7 +84,7 @@ pub async fn mark_script(pool: &DbPool, script_id: Uuid) -> Result<Vec<MarkResul
 
     if answers.is_empty() {
         return Err(AppError::BadRequest(
-            "No extracted answers found. Run OCR processing first.".into(),
+            "No answers were extracted from this script yet. Please run OCR processing first.".into(),
         ));
     }
 
