@@ -45,4 +45,9 @@ def split_answers(text: str) -> list[ExtractedQuestion]:
 
     flush()
 
+    if not questions:
+        text = " ".join(lines).strip()
+        if text:
+            questions.append(ExtractedQuestion(number=1, text=text, confidence=1.0))
+
     return questions
