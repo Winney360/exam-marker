@@ -33,7 +33,6 @@ pub async fn create_answer(
     Ok(answer)
 }
 
-#[allow(dead_code)]
 pub async fn get_answers_for_script(
     pool: &DbPool,
     script_id: Uuid,
