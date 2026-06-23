@@ -54,3 +54,11 @@ pub async fn list_assessments(
     .fetch_all(pool)
     .await
 }
+
+pub async fn list_all_assessments(pool: &DbPool) -> Result<Vec<Assessment>, sqlx::Error> {
+    sqlx::query_as::<_, Assessment>(
+        "SELECT id, teacher_id, title, description, max_mark, created_at, updated_at FROM assessments ORDER BY created_at DESC",
+    )
+    .fetch_all(pool)
+    .await
+}
