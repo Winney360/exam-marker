@@ -45,6 +45,18 @@ pub async fn get_script(pool: &DbPool, id: Uuid) -> Result<ScriptUpload, sqlx::E
     .await
 }
 
+pub async fn get_scripts_for_assessment(
+    pool: &DbPool,
+    assessment_id: Uuid,
+) -> Result<Vec<ScriptUpload>, sqlx::Error> {
+    sqlx::query_as::<_, ScriptUpload>(
+        "SELECT id, assessment_id, student_id, file_path, file_type, status, created_at, updated_at FROM script_uploads WHERE assessment_id = $1 ORDER BY created_at",
+    )
+    .bind(assessment_id)
+    .fetch_all(pool)
+    .await
+}
+
 pub async fn update_script_status(
     pool: &DbPool,
     id: Uuid,
