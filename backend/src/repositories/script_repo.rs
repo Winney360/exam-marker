@@ -57,6 +57,16 @@ pub async fn get_scripts_for_assessment(
     .await
 }
 
+pub async fn delete_script(pool: &DbPool, id: Uuid) -> Result<Option<String>, sqlx::Error> {
+    let row: Option<(String,)> = sqlx::query_as(
+        "DELETE FROM script_uploads WHERE id = $1 RETURNING file_path",
+    )
+    .bind(id)
+    .fetch_optional(pool)
+    .await?;
+    Ok(row.map(|r| r.0))
+}
+
 pub async fn update_script_status(
     pool: &DbPool,
     id: Uuid,
