@@ -13,9 +13,25 @@ pub async fn create_pool(database_url: &str) -> Result<DbPool, sqlx::Error> {
 pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
     sqlx::query(
         r#"
+        CREATE TABLE IF NOT EXISTS users (
+            id UUID PRIMARY KEY,
+            email VARCHAR NOT NULL UNIQUE,
+            password_hash VARCHAR NOT NULL,
+            name VARCHAR NOT NULL,
+            role VARCHAR NOT NULL DEFAULT 'teacher',
+            created_at TIMESTAMPTZ NOT NULL,
+            updated_at TIMESTAMPTZ NOT NULL
+        );
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
         CREATE TABLE IF NOT EXISTS assessments (
             id UUID PRIMARY KEY,
-            teacher_id UUID NOT NULL,
+            teacher_id UUID NOT NULL REFERENCES users(id),
             title VARCHAR NOT NULL,
             description TEXT,
             max_mark INTEGER NOT NULL,
