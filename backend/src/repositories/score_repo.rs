@@ -31,6 +31,18 @@ pub async fn create_scoring_result(
     Ok(result)
 }
 
+pub async fn get_marks_for_script(
+    pool: &DbPool,
+    script_id: Uuid,
+) -> Result<Vec<FinalMark>, sqlx::Error> {
+    sqlx::query_as::<_, FinalMark>(
+        "SELECT id, script_id, question_number, ai_suggested_mark, teacher_final_mark, is_override, override_reason, created_at, updated_at FROM final_marks WHERE script_id = $1 ORDER BY question_number",
+    )
+    .bind(script_id)
+    .fetch_all(pool)
+    .await
+}
+
 pub async fn upsert_final_mark(
     pool: &DbPool,
     script_id: Uuid,
