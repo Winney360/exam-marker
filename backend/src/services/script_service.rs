@@ -61,3 +61,12 @@ pub async fn upload_script(
 
     Ok(script)
 }
+
+pub async fn list_scripts(
+    pool: &DbPool,
+    assessment_id: Uuid,
+) -> Result<Vec<ScriptUpload>, AppError> {
+    script_repo::get_scripts_for_assessment(pool, assessment_id)
+        .await
+        .map_err(AppError::Database)
+}
