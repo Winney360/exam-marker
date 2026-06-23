@@ -48,22 +48,22 @@ pub async fn register(
     req: RegisterRequest,
 ) -> Result<AuthResponse, AppError> {
     if req.email.is_empty() || req.password.is_empty() || req.name.is_empty() {
-        return Err(AppError::BadRequest("Email, password, and name are required".into()));
+        return Err(AppError::BadRequest("Please fill in all fields — email, password, and name are required.".into()));
     }
 
     if req.password.len() < 6 {
-        return Err(AppError::BadRequest("Password must be at least 6 characters".into()));
+        return Err(AppError::BadRequest("Your password needs to be at least 6 characters long.".into()));
     }
 
     let existing = user_repo::find_user_by_email(pool, &req.email)
         .await?;
 
     if existing.is_some() {
-        return Err(AppError::BadRequest("Email already registered".into()));
+        return Err(AppError::BadRequest("An account with this email already exists.".into()));
     }
 
     let password_hash = bcrypt::hash(&req.password, bcrypt::DEFAULT_COST)
-        .map_err(|e| AppError::Internal(format!("Failed to hash password: {}", e)))?;
+        .map_err(|e| AppError::Internal(format!("Something went wrong while setting up your account. Please try again. ({})", e)))?;
 
     let user = user_repo::create_user(pool, &req.email, &password_hash, &req.name, "teacher")
         .await?;
@@ -86,13 +86,13 @@ pub async fn login(
 ) -> Result<AuthResponse, AppError> {
     let user = user_repo::find_user_by_email(pool, &req.email)
         .await?
-        .ok_or_else(|| AppError::BadRequest("Invalid email or password".into()))?;
+        .ok_or_else(|| AppError::BadRequest("Incorrect email or password. Please try again.".into()))?;
 
     let valid = bcrypt::verify(&req.password, &user.password_hash)
-        .map_err(|e| AppError::Internal(format!("Failed to verify password: {}", e)))?;
+        .map_err(|e| AppError::Internal(format!("Something went wrong while verifying your credentials. Please try again. ({})", e)))?;
 
     if !valid {
-        return Err(AppError::BadRequest("Invalid email or password".into()));
+        return Err(AppError::BadRequest("Incorrect email or password. Please try again.".into()));
     }
 
     let token = generate_token(user.id, &user.email, jwt_secret)?;
@@ -109,7 +109,7 @@ pub async fn login(
 fn generate_token(user_id: Uuid, email: &str, secret: &str) -> Result<String, AppError> {
     let expiration = chrono::Utc::now()
         .checked_add_signed(chrono::Duration::hours(24))
-        .ok_or_else(|| AppError::Internal("Failed to compute expiration".into()))?
+        .ok_or_else(|| AppError::Internal("Something went wrong while creating your session. Please try again.".into()))?
         .timestamp() as usize;
 
     let claims = Claims {
@@ -123,7 +123,7 @@ fn generate_token(user_id: Uuid, email: &str, secret: &str) -> Result<String, Ap
         &claims,
         &EncodingKey::from_secret(secret.as_bytes()),
     )
-    .map_err(|e| AppError::Internal(format!("Failed to create token: {}", e)))
+    .map_err(|e| AppError::Internal(format!("Something went wrong while creating your session. Please try again. ({})", e)))
 }
 
 pub struct AuthUser {
@@ -146,9 +146,9 @@ where
             .ok_or_else(|| {
                 (
                     StatusCode::UNAUTHORIZED,
-                    Json(json!({ "success": false, "error": "Missing Authorization header" })),
-                )
-                    .into_response()
+                    Json(json!({ "success": false, "error": "You need to be logged in to do that. Please sign in." })),
+                    )
+                        .into_response()
             })?;
 
         let token = auth_header
@@ -156,7 +156,7 @@ where
             .ok_or_else(|| {
                 (
                     StatusCode::UNAUTHORIZED,
-                    Json(json!({ "success": false, "error": "Invalid Authorization format" })),
+                    Json(json!({ "success": false, "error": "Invalid login format. Please try signing in again." })),
                 )
                     .into_response()
             })?;
@@ -172,7 +172,7 @@ where
         .map_err(|_| {
             (
                 StatusCode::UNAUTHORIZED,
-                Json(json!({ "success": false, "error": "Invalid or expired token" })),
+                Json(json!({ "success": false, "error": "Your session has expired. Please sign in again." })),
             )
                 .into_response()
         })?;
