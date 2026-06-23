@@ -29,6 +29,24 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
 
     sqlx::query(
         r#"
+        CREATE TABLE IF NOT EXISTS questions (
+            id UUID PRIMARY KEY,
+            assessment_id UUID NOT NULL REFERENCES assessments(id),
+            question_number INTEGER NOT NULL,
+            max_marks INTEGER NOT NULL,
+            memo_text TEXT NOT NULL,
+            keywords TEXT[] NOT NULL DEFAULT '{}',
+            created_at TIMESTAMPTZ NOT NULL,
+            updated_at TIMESTAMPTZ NOT NULL,
+            UNIQUE(assessment_id, question_number)
+        );
+        "#,
+    )
+    .execute(pool)
+    .await?;
+
+    sqlx::query(
+        r#"
         CREATE TABLE IF NOT EXISTS script_uploads (
             id UUID PRIMARY KEY,
             assessment_id UUID NOT NULL REFERENCES assessments(id),
