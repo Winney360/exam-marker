@@ -311,15 +311,15 @@ export default function Home() {
 
         {/* CTA */}
         <section className="py-24 px-6 sm:px-8">
-          <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-10">
-            <div className="flex-1 text-center lg:text-left">
+          <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
+            <div className="flex-1 text-center">
               <h2 className="text-3xl sm:text-4xl font-bold text-slate-100 tracking-tight">
                 Ready to save hours on grading?
               </h2>
               <p className="mt-4 text-lg text-slate-400">
                 Get started for free. No credit card required.
               </p>
-              <div className="mt-8">
+              <div className="mt-8 flex justify-center">
                 <Link
                   to="/login"
                   className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-medium bg-teal-400 text-slate-900 rounded-xl hover:bg-teal-300 transition-all shadow-xl shadow-teal-500/25"
@@ -335,7 +335,7 @@ export default function Home() {
               <img
                 src="/ask.png"
                 alt=""
-                className="w-72 sm:w-80 lg:w-96 h-auto object-contain"
+                className="w-80 sm:w-96 lg:w-[32rem] h-auto object-contain"
               />
             </div>
           </div>
