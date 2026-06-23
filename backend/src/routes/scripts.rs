@@ -28,6 +28,7 @@ pub async fn upload_script(
     Path(assessment_id): Path<Uuid>,
     mut multipart: Multipart,
 ) -> Result<Json<serde_json::Value>, AppError> {
+    assessment_service::get_assessment(&state.db, assessment_id, auth.id).await?;
     let mut file_bytes: Option<Vec<u8>> = None;
     let mut file_name: Option<String> = None;
     let mut student_id: Option<String> = None;
