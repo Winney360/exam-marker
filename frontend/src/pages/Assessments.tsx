@@ -1,11 +1,9 @@
 import { useState, useEffect, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { api } from '../api/client.ts'
-import { useAuth } from '../hooks/useAuth.tsx'
 import type { Assessment } from '../types/index.ts'
 
 export default function Assessments() {
-  const { user } = useAuth()
   const [assessments, setAssessments] = useState<Assessment[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -30,7 +28,6 @@ export default function Assessments() {
   async function handleCreate(e: FormEvent) {
     e.preventDefault()
     await api.post('/assessments', {
-      teacher_id: user?.user_id ?? '00000000-0000-0000-0000-000000000000',
       title,
       description: description || null,
       max_mark: Number(maxMark),
