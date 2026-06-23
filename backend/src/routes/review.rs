@@ -33,3 +33,14 @@ pub async fn override_mark(
 
     Ok(Json(json!({ "success": true, "data": mark })))
 }
+
+pub async fn get_answers(
+    State(state): State<AppState>,
+    auth: AuthUser,
+    Path(script_id): Path<Uuid>,
+) -> Result<Json<serde_json::Value>, AppError> {
+    process_service::verify_script_ownership(&state.db, script_id, auth.id).await?;
+    let answers = review_service::get_answers(&state.db, script_id).await?;
+
+    Ok(Json(json!({ "success": true, "data": answers })))
+}
