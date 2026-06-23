@@ -48,6 +48,7 @@ pub async fn get_questions_for_assessment(
     .await
 }
 
+#[allow(dead_code)]
 pub async fn get_question(
     pool: &DbPool,
     id: Uuid,
