@@ -29,16 +29,6 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
 
     sqlx::query(
         r#"
-        ALTER TABLE assessments
-        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC',
-        ALTER COLUMN updated_at TYPE TIMESTAMPTZ USING updated_at AT TIME ZONE 'UTC'
-        "#,
-    )
-    .execute(pool)
-    .await?;
-
-    sqlx::query(
-        r#"
         CREATE TABLE IF NOT EXISTS script_uploads (
             id UUID PRIMARY KEY,
             assessment_id UUID NOT NULL REFERENCES assessments(id),
@@ -49,16 +39,6 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             created_at TIMESTAMPTZ NOT NULL,
             updated_at TIMESTAMPTZ NOT NULL
         );
-        "#,
-    )
-    .execute(pool)
-    .await?;
-
-    sqlx::query(
-        r#"
-        ALTER TABLE script_uploads
-        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC',
-        ALTER COLUMN updated_at TYPE TIMESTAMPTZ USING updated_at AT TIME ZONE 'UTC'
         "#,
     )
     .execute(pool)
@@ -81,15 +61,6 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
 
     sqlx::query(
         r#"
-        ALTER TABLE extracted_answers
-        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC'
-        "#,
-    )
-    .execute(pool)
-    .await?;
-
-    sqlx::query(
-        r#"
         CREATE TABLE IF NOT EXISTS scoring_results (
             id UUID PRIMARY KEY,
             answer_id UUID NOT NULL REFERENCES extracted_answers(id),
@@ -97,15 +68,6 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             reasoning TEXT NOT NULL,
             created_at TIMESTAMPTZ NOT NULL
         );
-        "#,
-    )
-    .execute(pool)
-    .await?;
-
-    sqlx::query(
-        r#"
-        ALTER TABLE scoring_results
-        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC'
         "#,
     )
     .execute(pool)
@@ -124,16 +86,6 @@ pub async fn run_migrations(pool: &DbPool) -> Result<(), sqlx::Error> {
             created_at TIMESTAMPTZ NOT NULL,
             updated_at TIMESTAMPTZ NOT NULL
         );
-        "#,
-    )
-    .execute(pool)
-    .await?;
-
-    sqlx::query(
-        r#"
-        ALTER TABLE final_marks
-        ALTER COLUMN created_at TYPE TIMESTAMPTZ USING created_at AT TIME ZONE 'UTC',
-        ALTER COLUMN updated_at TYPE TIMESTAMPTZ USING updated_at AT TIME ZONE 'UTC'
         "#,
     )
     .execute(pool)
