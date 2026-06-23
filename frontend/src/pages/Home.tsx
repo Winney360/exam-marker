@@ -313,7 +313,7 @@ export default function Home() {
         <section className="py-24 px-6 sm:px-8">
           <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-center gap-8 lg:gap-12">
             <div className="flex-1 text-center">
-              <h2 className="text-3xl sm:text-4xl font-bold text-slate-100 tracking-tight">
+              <h2 className="text-2xl lg:text-3xl font-bold text-slate-100 tracking-tight whitespace-nowrap">
                 Ready to save hours on grading?
               </h2>
               <p className="mt-4 text-lg text-slate-400">
