@@ -1,5 +1,6 @@
 use axum::{
     extract::{Multipart, Path, State},
+    http::StatusCode,
     Json,
 };
 use serde_json::json;
@@ -86,4 +87,15 @@ pub async fn upload_script(
             "status": script.status
         }
     })))
+}
+
+pub async fn delete_script(
+    State(state): State<AppState>,
+    auth: AuthUser,
+    Path(id): Path<Uuid>,
+) -> Result<(StatusCode, Json<serde_json::Value>), AppError> {
+    let script = script_service::get_script(&state.db, id).await?;
+    assessment_service::get_assessment(&state.db, script.assessment_id, auth.id).await?;
+    script_service::delete_script(&state.db, id).await?;
+    Ok((StatusCode::OK, Json(json!({ "success": true, "data": null }))))
 }
