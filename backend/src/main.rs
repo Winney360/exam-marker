@@ -59,6 +59,8 @@ async fn main() {
 
     let app = Router::new()
         .route("/health", get(routes::health::health_check))
+        .route("/auth/register", post(routes::auth::register))
+        .route("/auth/login", post(routes::auth::login))
         .route("/assessments", post(routes::assessments::create_assessment))
         .route("/assessments/{id}", get(routes::assessments::get_assessment))
         .route(
