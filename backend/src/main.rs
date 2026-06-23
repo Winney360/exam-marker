@@ -3,6 +3,7 @@ use axum::{
     routing::{delete, get, post, put},
 };
 use tower_http::cors::CorsLayer;
+use tower_http::services::ServeDir;
 use tower_http::trace::TraceLayer;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 
@@ -100,6 +101,13 @@ async fn main() {
         .route("/marks/{id}", put(routes::review::override_mark))
         .layer(cors)
         .layer(TraceLayer::new_for_http())
+        .fallback_service(
+            ServeDir::new("dist")
+                .append_index_html_on_directories(true)
+                .fallback(
+                    tower_http::services::fs::ServeFile::new("dist/index.html"),
+                ),
+        )
         .with_state(state);
 
     let listener = tokio::net::TcpListener::bind(&addr)
