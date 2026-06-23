@@ -1,5 +1,6 @@
 pub mod analytics_service;
 pub mod assessment_service;
+pub mod auth_service;
 pub mod ocr_client;
 pub mod process_service;
 pub mod question_service;
