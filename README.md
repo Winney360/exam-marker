@@ -96,7 +96,7 @@ Visit `http://localhost:5173`. The frontend proxies `/api` to the backend automa
 | Root Directory | `frontend` |
 | Build Command | `npm run build` |
 | Output Directory | `dist` |
-| Env Var | `VITE_API_URL=https://rio-backend.onrender.com` |
+| Env Var | `VITE_API_URL=https://exam-marker.onrender.com` |
 
 ### Render (Backend + OCR + DB)
 
