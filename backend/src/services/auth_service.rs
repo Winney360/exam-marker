@@ -86,7 +86,7 @@ pub async fn login(
 ) -> Result<AuthResponse, AppError> {
     let user = user_repo::find_user_by_email(pool, &req.email)
         .await?
-        .ok_or_else(|| AppError::BadRequest("Incorrect email or password. Please try again.".into()))?;
+        .ok_or_else(|| AppError::BadRequest("Account not found. Please register first.".into()))?;
 
     let valid = bcrypt::verify(&req.password, &user.password_hash)
         .map_err(|e| AppError::Internal(format!("Something went wrong while verifying your credentials. Please try again. ({})", e)))?;
